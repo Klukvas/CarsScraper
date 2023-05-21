@@ -1,32 +1,60 @@
-from src.utils.utils import config_read
-from src.AutoRia.api.SearchApi import SearchApi
+from logging import Logger
+from src.autoRia.api.SearchApi import SearchApi
 from src.utils.Env import Env
+
 
 class Scrapper:
 
-    def __init__(self, base_url: str, countpage: int = 100) -> None:
+    def __init__(
+            self,
+            base_url: str,
+            api_keys: list,
+            page_count: int,
+            max_scpapped: int,
+            logger: Logger
+        ) -> None:
+
         self.search_api = SearchApi(base_url=base_url)
         self.env = Env()
-        self.countpage = countpage
+        self.api_keys = api_keys
+        self.page_count = page_count
+        self.max_scpapped = max_scpapped
+        self.current_page = 0
+        self.current_scrapped = 0
+        self.logger = logger
+        self.current_api_key = None
 
-    def setup_api_keys(self):
-        config = config_read(self.env.autoria_config_path)
-        self.api_keys: list = config['AUTO_RIA_API_KEYS']
+
+    def setup(self):
         try:
-            current_api_key = self.api_keys.pop()
-        except IndexError as error:
-            print(f'Here is an error with getting api key: {error}')
-        self.search_api.set_api_key(current_api_key)
-    
-    async def process_ids(self, id):
-        auto_info = self.search_api.get_auto_info(auto_id=id)
+            self.current_api_key = self.api_keys.pop()
+            self.search_api.set_api_key(self.current_api_key)
+        except IndexError:
+            print("Here is no api keys left")
+    async def process_ids(self, ads_id):
+        auto_info = await self.search_api.get_auto_info(auto_id=ads_id)
+        if auto_info.is_ok():
+            result = auto_info.get_value()
+            print(result)
+            self.current_scrapped += 1
+        else:
+            error = auto_info.get_error()
+            print(error)
 
-    async def start_parse(self):
-        respose = await self.search_api.get_ids(paramters=f'countpage={self.countpage}')
+    async def get_ids(self):
+        respose = await self.search_api.get_ids(
+            paramters=f'countpage={self.page_count}&page={self.current_page}'
+        )
         if respose.is_ok():
             respose_value = respose.get_value()
-            for id in respose_value['result']['search_result']['ids']:
-                await self.process_ids(id)
+            for ads_id in respose_value['data']['result']['search_result']['ids']:
+                await self.process_ids(ads_id)
         else:
             respose_error = respose.get_error()
             print(respose_error)
+
+    async def start_parse(self):
+        pages_for_scrapp = int(self.max_scpapped / self.page_count)
+        for _ in range(pages_for_scrapp):
+            await self.get_ids()
+            self.current_page += 1

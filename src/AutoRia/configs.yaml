@@ -3,3 +3,5 @@ AUTO_RIA_API_KEYS:
   - geD4Z8A5je8p3q03jXsjKbgC3VXAFHWfFaK65fYo
 
 BASE_URL: 'https://developers.ria.com'
+PAGE_COUNT: 100
+MAX_SCRAPPED: 100
