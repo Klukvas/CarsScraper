@@ -1,5 +1,5 @@
 from logging import Logger
-from src.autoRia.api.SearchApi import SearchApi
+from src.autoRia.api.searchApi import SearchApi
 from src.utils.Env import Env
 
 
@@ -31,12 +31,14 @@ class Scrapper:
             self.search_api.set_api_key(self.current_api_key)
         except IndexError:
             print("Here is no api keys left")
+
     async def process_ids(self, ads_id):
         auto_info = await self.search_api.get_auto_info(auto_id=ads_id)
         if auto_info.is_ok():
             result = auto_info.get_value()
             print(result)
             self.current_scrapped += 1
+            breakpoint()
         else:
             error = auto_info.get_error()
             print(error)

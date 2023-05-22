@@ -7,4 +7,3 @@ def config_read(path_to_config: str):
             return yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             raise exc
-    
