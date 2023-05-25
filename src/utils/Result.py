@@ -29,7 +29,7 @@ class Ok(Result):
     def is_ok(self):
         return True
 
-    def get_value(self) -> dict:
+    def get_value(self) -> Union[dict, list]:
         return self.json_response
 
 

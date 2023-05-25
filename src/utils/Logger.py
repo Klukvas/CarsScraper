@@ -27,7 +27,7 @@ class CustomFormatter(logging.Formatter):
 
 
 class Logger:
-    def custom_logger(self, name=__name__):
+    def custom_logger(self, name=__name__) -> logging.Logger:
         log = logging.getLogger("CarParserLog")
         log.propagate = False   #https://docs.python.org/3/library/logging.html#logging.Logger.propagate
         log.handlers.clear()
