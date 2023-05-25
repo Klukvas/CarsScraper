@@ -1,10 +1,10 @@
 import asyncio
-from .syncCommonData import SyncCommonData
 from src.autoRia.api import ParametersApi
-from .syncParameters import SyncParameters
 from src.autoRia.models import DatabaseClient
 from src.utils import build_bd_url, config_read, Env, Logger as CustomLogger
 from src.autoRia.queries import ParametersQueries
+from .syncCommonData import SyncCommonData
+from .syncParameters import SyncParameters
 
 
 class SynchronizerController:
@@ -52,7 +52,7 @@ class SynchronizerController:
     async def start(self):
         await self.db_client.create_database_if_not_exist(
             user=self.env.pg_user,
-            database=self.env._pg_auto_db_name,
+            database=self.env.pg_auto_db_name,
             password=self.env.pg_password
         )
         await self.db_client.init_models()

@@ -25,12 +25,6 @@ class Scrapper:
         self.current_api_key = None
 
 
-    def setup(self):
-        try:
-            self.current_api_key = self.api_keys.pop()
-            self.search_api.set_api_key(self.current_api_key)
-        except IndexError:
-            print("Here is no api keys left")
 
     async def process_ids(self, ads_id):
         auto_info = await self.search_api.get_auto_info(auto_id=ads_id)
@@ -38,7 +32,6 @@ class Scrapper:
             result = auto_info.get_value()
             print(result)
             self.current_scrapped += 1
-            breakpoint()
         else:
             error = auto_info.get_error()
             print(error)

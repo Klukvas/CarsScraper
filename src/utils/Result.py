@@ -5,6 +5,7 @@ class Result:
     def __init__(self, failed_response: Union[dict, None] = None, success_response: Union[dict, None] = None) -> None:
         self.failed_response = failed_response
         self.success_response = success_response
+        self.json_response = None
 
     def is_ok(self) -> bool:
         return False
@@ -20,7 +21,7 @@ class Result:
         return default
     def __repr__(self) -> str:
         return str(self.json_response)
-    
+
 class Ok(Result):
     def __init__(self, response: dict) -> None:
         super().__init__(success_response = response)
@@ -37,12 +38,9 @@ class Error(Result):
     def __init__(self, response: dict) -> None:
         super().__init__(failed_response=response)
         self.json_response = response
-    
+
     def is_error(self):
         return True
 
     def get_error(self) -> dict:
         return self.json_response
-        
-
-    

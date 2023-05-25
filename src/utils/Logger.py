@@ -28,7 +28,7 @@ class CustomFormatter(logging.Formatter):
 
 class Logger:
     def custom_logger(self, name=__name__) -> logging.Logger:
-        log = logging.getLogger("CarParserLog")
+        log = logging.getLogger(name)
         log.propagate = False   #https://docs.python.org/3/library/logging.html#logging.Logger.propagate
         log.handlers.clear()
         log.setLevel(logging.DEBUG)
@@ -38,7 +38,12 @@ class Logger:
         file.setLevel(logging.WARNING)
         console.setLevel(logging.DEBUG)
 
-        file.setFormatter(logging.Formatter('%(levelname)s: %(asctime)s: %(message)s: %(process)d: %(processName)s', datefmt='%d/%m  %H:%M:%S'))
+        file.setFormatter(
+            logging.Formatter(
+                '%(levelname)s: %(asctime)s: %(message)s: %(process)d: %(processName)s', 
+                datefmt='%d/%m  %H:%M:%S'
+            )
+        )
         console.setFormatter(CustomFormatter())
 
         log.addHandler(file)

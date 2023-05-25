@@ -1,16 +1,11 @@
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy_utils import database_exists, create_database
-from sqlalchemy.ext.asyncio import(
-    create_async_engine, 
-    AsyncSession, 
-    async_sessionmaker, 
-    async_session,
-    async_scoped_session
-)
 import asyncpg
-from asyncio import current_task
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.asyncio import(
+    create_async_engine,
+    AsyncSession,
+    async_sessionmaker,
+)
 from sqlalchemy.pool import NullPool
-
 
 
 Base = declarative_base()

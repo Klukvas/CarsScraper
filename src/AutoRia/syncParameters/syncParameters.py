@@ -23,8 +23,15 @@ from src.autoRia.models.databaseClient import DatabaseClient
 
 
 class SyncParameters:
-    
-    def __init__(self, parameters_api: ParametersApi, parameters_queries: ParametersQueries, api_keys: list, logger: Logger, db_client: DatabaseClient) -> None:
+
+    def __init__(
+            self, 
+            parameters_api: ParametersApi, 
+            parameters_queries: ParametersQueries, 
+            api_keys: list, 
+            logger: Logger, 
+            db_client: DatabaseClient
+        ) -> None:
         self.api_keys = api_keys
         self.parameters_api = parameters_api
         self.parameters_queries = parameters_queries

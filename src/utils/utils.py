@@ -1,5 +1,5 @@
-import yaml
 from functools import wraps
+import yaml
 from logging import Logger
 from .Env import Env
 
@@ -27,7 +27,7 @@ def log_function_work(logger:Logger=None):
             if not logger:
                 # Get the logger from the class instance
                 try:
-                    logger = args[0].logger 
+                    logger = args[0].logger
                 except:
                     raise ValueError("The logger is not found.")
             # Log the function call with decorator arguments

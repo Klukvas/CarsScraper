@@ -1,15 +1,10 @@
 from __future__ import annotations
-
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import mapped_column
 from typing import List
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from sqlalchemy import ForeignKey
-from sqlalchemy import Integer
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import relationship
+
 
 
 from src.autoRia.models.databaseClient import Base
@@ -34,7 +29,7 @@ class Cities(Base):
 
     def __repr__(self):
         return f'cities model(id: {self.id}; name: {self.name}; value: {self.value})'
-    
+
 class Categories(Base):
     __tablename__ = 'categories'
 
@@ -107,6 +102,6 @@ class Countries(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     value = Column(Integer, unique=True)
-    
+
     def __repr__(self):
         return f'countries model(id: {self.id}; name: {self.name}; value: {self.value})'

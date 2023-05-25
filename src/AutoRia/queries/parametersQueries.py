@@ -1,17 +1,17 @@
 from typing import Any
+from logging import Logger
+from sqlalchemy.future import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import IntegrityError
 from src.autoRia.models.parameters import (
     Bodystyles
 )
 from src.autoRia.models.databaseClient import DatabaseClient
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
-from logging import Logger
-from sqlalchemy.exc import IntegrityError
+
 
 
 class ParametersQueries:
-    # session: AsyncSession
-    
+
     def __init__(self, db_client: DatabaseClient, logger: Logger) -> None:
         self.db_client = db_client
         self.logger = logger
@@ -20,16 +20,18 @@ class ParametersQueries:
         try:
             session.add(record)
             await session.commit()
-        except IntegrityError as error:
-            self.logger.warning(f"Rollback: record of {str(record)}. Rollback based on error: IntegrityError(duplicate key value)")
+        except IntegrityError:
+            self.logger.warning(
+                f"Rollback: record of {str(record)}. Rollback based on error: IntegrityError(duplicate key value)"
+            )
             await session.rollback()
 
     async def get_form_common_model(self, model):
         async with self.db_client.session() as session:
-            q = select(model)
-            categories = await session.execute(q)
+            query = select(model)
+            categories = await session.execute(query)
             return categories.scalars().all()
-    
+
     async def insert_common_data(self, data: dict, model):
         async with self.db_client.session() as session:
             new_category = model(
