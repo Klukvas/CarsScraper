@@ -7,16 +7,17 @@ from src.autoRia.models import (
 from src.autoRia.api.parametersApi import ParametersApi
 
 class SyncCommonData:
+
     def __init__(self, parameters_api: ParametersApi) -> None:
         self.parameters_api = parameters_api
-    
+
     @property
     def countries(self):
         return {
             "api_method": self.parameters_api.get_countries,
             "model": Countries
         }
-    
+
     @property
     def fuel_types(self):
         return {
@@ -30,11 +31,10 @@ class SyncCommonData:
             "api_method": self.parameters_api.get_states,
             "model": States
         }
-    
+
     @property
     def categories(self):
         return {
             "api_method": self.parameters_api.get_categories,
             "model": Categories
         }
-   
