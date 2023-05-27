@@ -2,7 +2,7 @@ import asyncio
 from src.utils import config_read, Env, Logger
 from src.autoRia.scrapper import Scrapper
 from src.autoRia.syncParameters import SynchronizerController
-
+from src.rst.scrapper import Scrapper as rstScrapepr
 
 async def scrapper():
     env = Env()
@@ -30,8 +30,13 @@ async def sync_data(sync_variant: str='all'):
     controller = SynchronizerController()
     await controller.start()
 
-
+def rst_scrapper():
+    rstScrapepr().start()
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(sync_data())
+    rst_scrapper()
+
+
+# if __name__ == '__main__':
+#     loop = asyncio.get_event_loop()
+#     loop.run_until_complete(sync_data())
 
