@@ -60,6 +60,10 @@ class SynchronizerController:
         if sync_variant == 'all':
             # await self.sync_sommon()
             await self.synchronizer.sync_all_bodystyles()
+        elif sync_variant == 'bodystyles':
+            await self.synchronizer.sync_all_bodystyles()
+        elif sync_variant == 'marks':
+            await self.synchronizer.sycn_all_marks()
         elif sync_variant == 'common_only':
             pass
             # await self.sync_sommon()

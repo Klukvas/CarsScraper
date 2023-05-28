@@ -32,11 +32,11 @@ async def sync_data(sync_variant: str='all'):
 
 def rst_scrapper():
     rstScrapepr().start()
-if __name__ == '__main__':
-    rst_scrapper()
-
-
 # if __name__ == '__main__':
-#     loop = asyncio.get_event_loop()
-#     loop.run_until_complete(sync_data())
+#     rst_scrapper()
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(sync_data())
 

@@ -34,7 +34,11 @@ class Categories(Base):
     __tablename__ = 'categories'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    
+    
     bodystyles: Mapped[List["Bodystyles"]] = relationship(back_populates="category")
+    marks: Mapped[List["Marks"]] = relationship(back_populates="category")
+
 
     name = Column(String)
     value = Column(Integer, unique=True)
@@ -60,6 +64,10 @@ class Marks(Base):
     __tablename__ = 'marks'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+
+    category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
+    category: Mapped["Categories"] = relationship(back_populates="marks")
+
     name = Column(String)
     value = Column(Integer, unique=True)
 

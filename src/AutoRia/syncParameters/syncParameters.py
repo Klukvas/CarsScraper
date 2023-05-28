@@ -70,12 +70,13 @@ class SyncParameters:
             result = await coro
             if result.is_ok():
                 bodystyles = result.get_value()
+                category_id = int(bodystyles['params_for_save']['category_id'])
                 inser_params_tasks = []
                 for bodystyle in bodystyles['data']:
                     inser_params_tasks.append(
                         self.parameters_queries.insert_bodystyles(
                             data={
-                                'category_id': int(result['params_for_save']['category_id']),
+                                'category_id': category_id,
                                 'name': bodystyle['name'],
                                 'value': bodystyle['value']
                             }
@@ -87,8 +88,27 @@ class SyncParameters:
                 raise ValueError(f"Error with getting data from bodystyles: {error}")
             
 
-            
-        
-
-
+    async def sycn_all_marks(self):
+        categories = await self.parameters_queries.get_form_common_model(model=Categories)
+        get_marks_coros = [
+                self.parameters_api.get_marks(category.value)
+                for category in categories
+            ]
+        for coro in asyncio.as_completed(get_marks_coros):
+            result = await coro
+            if result.is_ok():
+                marks = result.get_value()
+                category_id = int(marks['params_for_save']['category_id'])
+                inser_params_tasks = []
+                for mark in marks['data']:
+                    inser_params_tasks.append(
+                        self.parameters_queries.insert_marks(
+                            data={
+                                'category_id': int(category_id),
+                                'name': mark['name'],
+                                'value': mark['value']
+                            }
+                        )
+                    )
+                await asyncio.gather(*inser_params_tasks)
 

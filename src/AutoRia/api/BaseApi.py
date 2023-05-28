@@ -12,6 +12,7 @@ class BaseApi:
 
     def set_api_key(self) -> None:
         try:
+            breakpoint()
             self.current_api_key = self.api_keys.pop()
         except IndexError:
             raise ValueError(f"All api keys are used")

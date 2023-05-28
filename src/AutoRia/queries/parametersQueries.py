@@ -4,7 +4,8 @@ from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from src.autoRia.models.parameters import (
-    Bodystyles
+    Bodystyles,
+    Marks
 )
 from src.autoRia.models.databaseClient import DatabaseClient
 
@@ -16,7 +17,7 @@ class ParametersQueries:
         self.db_client = db_client
         self.logger = logger
 
-    async def commit_or_revert(self, record: Any, session: AsyncSession):
+    async def commit_or_revert(self, record: Any, session: AsyncSession) -> None:
         try:
             session.add(record)
             await session.commit()
@@ -26,7 +27,7 @@ class ParametersQueries:
             )
             await session.rollback()
 
-    async def get_form_common_model(self, model):
+    async def get_form_common_model(self, model) -> None:
         async with self.db_client.session() as session:
             query = select(model)
             categories = await session.execute(query)
@@ -43,9 +44,21 @@ class ParametersQueries:
                 session=session
             )
 
-    async def insert_bodystyles(self, data: dict):
+    async def insert_bodystyles(self, data: dict )-> None:
         async with self.db_client.session() as session:
             new_bodystyle = Bodystyles(
+                category_id = data['category_id'],
+                name = data['name'],
+                value = data['value']
+            )
+            await self.commit_or_revert(
+                record=new_bodystyle,
+                session=session
+            )
+
+    async def insert_marks(self, data:dict) -> None:
+        async with self.db_client.session() as session:
+            new_bodystyle = Marks(
                 category_id = data['category_id'],
                 name = data['name'],
                 value = data['value']

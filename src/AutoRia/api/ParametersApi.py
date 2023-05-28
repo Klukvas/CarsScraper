@@ -28,7 +28,7 @@ class ParametersApi(BaseApi):
     @log_function_work()
     async def get_marks(self, category_id: int) -> Union[Ok, Error]:
         url = f'{self.base_url}/auto/categories/{category_id}/marks?api_key={self.current_api_key}'
-        response = await self.make_http_request(url=url, method=HttpMethods.GET.value)
+        response = await self.make_http_request(url=url, method=HttpMethods.GET.value, params_for_save={'category_id': category_id})
         return response
 
     @log_function_work()
