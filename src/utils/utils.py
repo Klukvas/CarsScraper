@@ -19,6 +19,21 @@ def build_bd_url(env: Env) -> str:
             db_name=env.pg_auto_db_name
         )
 
+def split_array(arr: list, subarray_size: int):
+    new_arr = []
+    length = len(arr)
+    size = int(length // subarray_size)
+    remainder = int(length % subarray_size)
+    loops_count = size + 1 if remainder > 0 else size
+    start = 0
+    end = subarray_size
+    for num in range(loops_count):
+        new_arr.append(arr[start:end])
+        start += subarray_size
+        end += subarray_size
+
+    return new_arr
+
 def log_function_work(logger:Logger=None):
     def decorator(func):
         @wraps(func)

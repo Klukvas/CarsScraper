@@ -5,5 +5,7 @@ from .Result import Ok, Error
 from .utils import (
     config_read,
     build_bd_url,
-    log_function_work
+    log_function_work,
+    split_array
 )
+

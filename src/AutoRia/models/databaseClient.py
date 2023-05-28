@@ -4,8 +4,12 @@ from sqlalchemy.ext.asyncio import(
     create_async_engine,
     AsyncSession,
     async_sessionmaker,
+    async_scoped_session
 )
 from sqlalchemy.pool import NullPool
+from asyncio import current_task
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_scoped_session
+from sqlalchemy.orm import sessionmaker
 
 
 Base = declarative_base()
@@ -15,11 +19,25 @@ class DatabaseClient:
 
     def __init__(self, db_url:str):
         self.db_url = db_url
-        self.engine = create_async_engine(db_url, future=True, poolclass=NullPool)
-        self.created_sessions = []
-        self.session = async_sessionmaker(
-                self.engine, class_=AsyncSession, expire_on_commit=False
+        self.engine = create_async_engine(
+            db_url, 
+            future=True, 
+            poolclass=NullPool,
+            pool_reset_on_return=False,
         )
+        self.created_sessions = []
+        # self.session = async_sessionmaker(
+        #         self.engine, class_=AsyncSession, expire_on_commit=True
+        # )
+        SessionLocal = sessionmaker(
+            bind=self.engine, 
+            autocommit=False, 
+            autoflush=False, 
+            class_=AsyncSession, 
+            expire_on_commit=True
+        )
+        self.session = async_scoped_session(SessionLocal, scopefunc=current_task)
+        
     async def create_database_if_not_exist(
             self, 
             user: str, 

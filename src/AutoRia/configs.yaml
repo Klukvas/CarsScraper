@@ -2,7 +2,9 @@ AUTO_RIA_API_KEYS:
   - 8s85MIseNcyqLNhDgRSTZBBgZ1GDKVC5WUQLr1BD
   - geD4Z8A5je8p3q03jXsjKbgC3VXAFHWfFaK65fYo
   - LcvnpjKw3XWMGIyQxPnQmgDsg3RE8MNsBnqCzB8R
+  - njij8hW7vp51luuU2y8dTknurRceF8FpQAIzgQuY
 BASE_URL: 'https://developers.ria.com'
 PAGE_COUNT: 100
 MAX_SCRAPPED: 100
-synchronization_options: marks
+SYNCHRONIZATION_OPTIONS: marks
+COUNT_REQUESTS_PER_HOUR: 30

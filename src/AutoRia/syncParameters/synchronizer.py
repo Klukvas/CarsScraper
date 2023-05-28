@@ -18,7 +18,8 @@ class SynchronizerController:
         self.parameters_api = ParametersApi(
             base_url=self.config['BASE_URL'],
             logger=self.logger,
-            api_keys=self.config['AUTO_RIA_API_KEYS']
+            api_keys=self.config['AUTO_RIA_API_KEYS'],
+            handle_rate_limit_error=False
         )
         self.parameters_api.set_api_key()
         self.common_sync_data = SyncCommonData(self.parameters_api)
@@ -31,6 +32,7 @@ class SynchronizerController:
             parameters_queries=self.parameters_queries,
             db_client=self.db_client,
             api_keys=self.config['AUTO_RIA_API_KEYS'],
+            max_requests=self.config['COUNT_REQUESTS_PER_HOUR'],
             logger=self.logger
         )
 
@@ -56,7 +58,7 @@ class SynchronizerController:
             password=self.env.pg_password
         )
         await self.db_client.init_models()
-        sync_variant = self.config.get('synchronization_options', 'common_only')
+        sync_variant = self.config.get('SYNCHRONIZATION_OPTIONS', 'common_only')
         if sync_variant == 'all':
             # await self.sync_sommon()
             await self.synchronizer.sync_all_bodystyles()

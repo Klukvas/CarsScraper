@@ -3,11 +3,17 @@ from src.utils.Methods import HttpMethods
 from src.utils.Result import Ok, Error
 from src.autoRia.api.baseApi import BaseApi
 from src.utils.utils import log_function_work
-
+from logging import Logger
 
 class ParametersApi(BaseApi):
-    def __init__(self, base_url: str, logger, api_keys: list) -> None:
-        super().__init__(api_keys=api_keys)
+    def __init__(
+            self, 
+            base_url: str, 
+            logger: Logger, 
+            api_keys: list, 
+            handle_rate_limit_error: bool=True
+        ) -> None:
+        super().__init__(api_keys, handle_rate_limit_error)
         self.base_url = base_url
         self.logger = logger
     

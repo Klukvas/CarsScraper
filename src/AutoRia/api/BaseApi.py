@@ -5,14 +5,14 @@ from src.utils.Env import Env
 
 
 class BaseApi:
-    def __init__(self, api_keys: list) -> None:
+    def __init__(self, api_keys: list, handle_rate_limit_error: bool) -> None:
         self.env = Env
         self.api_keys = api_keys
         self.current_api_key = None
+        self.handle_rate_limit_error = handle_rate_limit_error
 
     def set_api_key(self) -> None:
         try:
-            breakpoint()
             self.current_api_key = self.api_keys.pop()
         except IndexError:
             raise ValueError(f"All api keys are used")
@@ -33,12 +33,15 @@ class BaseApi:
                 if response.ok:
                     return Ok({'data': json_response, 'params_for_save': params_for_save})
                 else:
-                    if json_response['error']['code'] == 'OVER_RATE_LIMIT':
-                        self.set_api_key()
-                        return await self.make_http_request(
-                            url=url,
-                            method=method,
-                            headers=headers,
-                            data=data
-                        )
+                    if self.handle_rate_limit_error:
+                        if json_response['error']['code'] == 'OVER_RATE_LIMIT':
+                            self.set_api_key()
+                            return await self.make_http_request(
+                                url=url,
+                                method=method,
+                                headers=headers,
+                                data=data
+                            )
+                        else:
+                            return Error({'error':json_response, 'params_for_save': params_for_save})
                     return Error({'error':json_response, 'params_for_save': params_for_save})

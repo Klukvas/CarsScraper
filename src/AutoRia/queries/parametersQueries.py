@@ -17,15 +17,17 @@ class ParametersQueries:
         self.db_client = db_client
         self.logger = logger
 
-    async def commit_or_revert(self, record: Any, session: AsyncSession) -> None:
+    async def commit_or_revert(self, session: AsyncSession) -> None:
         try:
-            session.add(record)
             await session.commit()
         except IntegrityError:
             self.logger.warning(
-                f"Rollback: record of {str(record)}. Rollback based on error: IntegrityError(duplicate key value)"
+                f"Rollback. Rollback based on error: IntegrityError(duplicate key value)"
             )
             await session.rollback()
+        finally:
+            self.logger.debug(f"Close session after commit")
+            await session.close()
 
     async def get_form_common_model(self, model) -> None:
         async with self.db_client.session() as session:
@@ -56,14 +58,15 @@ class ParametersQueries:
                 session=session
             )
 
-    async def insert_marks(self, data:dict) -> None:
+    async def insert_marks_from_list(self, data_list:list[dict]) -> None:
         async with self.db_client.session() as session:
-            new_bodystyle = Marks(
-                category_id = data['category_id'],
-                name = data['name'],
-                value = data['value']
-            )
+            for data in data_list:
+                new_bodystyle = Marks(
+                    category_id = data['category_id'],
+                    name = data['name'],
+                    value = data['value']
+                )
+                session.add(new_bodystyle)
             await self.commit_or_revert(
-                record=new_bodystyle,
                 session=session
             )
