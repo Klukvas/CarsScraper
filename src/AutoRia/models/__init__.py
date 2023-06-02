@@ -1,4 +1,4 @@
-from .parameters import (
+from .models import (
     Categories,
     Bodystyles,
     States,
@@ -7,6 +7,7 @@ from .parameters import (
     Models,
     FuelTypes,
     Gearboxes,
-    Countries
+    Countries,
+    AutoData
 )
 from .databaseClient import DatabaseClient
