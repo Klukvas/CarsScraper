@@ -185,5 +185,14 @@ class SyncParameters:
                     else:
                         raise ValueError(f"Error with getting data from bodystyles: {error}")
         if calls_with_key_limit:
-            self.parameters_api.set_api_key()
-            await self.sycn_all_marks(splitted_coros=split_array(calls_with_key_limit, int(self.max_requests / 2)))
+            try:
+                self.parameters_api.set_api_key()
+            except ValueError as exc:
+                Logger.error(f"Error with setting api key: {exc}")
+                return
+            await self.sycn_all_marks(
+                splitted_coros=split_array(
+                    calls_with_key_limit, 
+                    int(self.max_requests / 2)
+                )
+            )
