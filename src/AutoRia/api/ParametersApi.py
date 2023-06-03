@@ -68,13 +68,13 @@ class ParametersApi(BaseApi):
         return response
 
     @log_function_work()
-    async def get_cities(self, state_id) -> Union[Ok, Error]:
-        url = f'{self.base_url}/auto/states/{state_id}/cities?api_key={self.current_api_key}'
-        response = await self.make_http_request(url=url, method=HttpMethods.GET.value)
-        return response
-    
-    @log_function_work()
     async def get_states(self) -> Union[Ok, Error]:
         url = f'{self.base_url}/auto/states?api_key={self.current_api_key}'
+        response = await self.make_http_request(url=url, method=HttpMethods.GET.value)
+        return response
+
+    @log_function_work()
+    async def get_cities(self, state_id) -> Union[Ok, Error]:
+        url = f'{self.base_url}/auto/states/{state_id}/cities?api_key={self.current_api_key}'
         response = await self.make_http_request(url=url, method=HttpMethods.GET.value)
         return response

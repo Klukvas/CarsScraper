@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import(
     async_sessionmaker,
     async_scoped_session
 )
-from sqlalchemy.pool import NullPool
+from sqlalchemy.pool import AsyncAdaptedQueuePool
 from asyncio import current_task
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_scoped_session
 from sqlalchemy.orm import sessionmaker
@@ -22,7 +22,7 @@ class DatabaseClient:
         self.engine = create_async_engine(
             db_url, 
             future=True, 
-            poolclass=NullPool,
+            poolclass=AsyncAdaptedQueuePool,
             pool_reset_on_return=False,
         )
         self.created_sessions = []

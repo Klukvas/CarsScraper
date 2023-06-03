@@ -1,9 +1,10 @@
-from typing import Any
+from typing import Any, Union
 from logging import Logger
+import asyncio
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
-from src.autoRia.models.parameters import (
+from src.autoRia.models.models import (
     Bodystyles,
     Marks
 )
@@ -25,9 +26,6 @@ class ParametersQueries:
                 f"Rollback. Rollback based on error: IntegrityError(duplicate key value)"
             )
             await session.rollback()
-        finally:
-            self.logger.debug(f"Close session after commit")
-            await session.close()
 
     async def get_form_common_model(self, model) -> None:
         async with self.db_client.session() as session:
@@ -58,15 +56,27 @@ class ParametersQueries:
                 session=session
             )
 
-    async def insert_marks_from_list(self, data_list:list[dict]) -> None:
-        async with self.db_client.session() as session:
-            for data in data_list:
+    async def insert_marks(self, data:Union[list[dict], dict]) -> None:
+        async def inserter(mark:dict, session):
                 new_bodystyle = Marks(
-                    category_id = data['category_id'],
-                    name = data['name'],
-                    value = data['value']
+                    category_id = mark['category_id'],
+                    name = mark['name'],
+                    value = mark['value']
                 )
                 session.add(new_bodystyle)
+
+        async with self.db_client.session() as session:
+            if isinstance(data, list):
+                coros = [
+                    inserter(session=session, mark=item)
+                    for item in data
+                ]
+            else:
+                coros = [
+                    inserter(session=session, mark=data)
+                ]
+            
+            await asyncio.gather(*coros)
             await self.commit_or_revert(
                 session=session
             )

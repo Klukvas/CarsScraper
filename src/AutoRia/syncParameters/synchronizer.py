@@ -59,15 +59,15 @@ class SynchronizerController:
         )
         await self.db_client.init_models()
         sync_variant = self.config.get('SYNCHRONIZATION_OPTIONS', 'common_only')
-        # if sync_variant == 'all':
-        #     # await self.sync_sommon()
-        #     await self.synchronizer.sync_all_bodystyles()
-        # elif sync_variant == 'bodystyles':
-        #     await self.synchronizer.sync_all_bodystyles()
-        # elif sync_variant == 'marks':
-        #     await self.synchronizer.sycn_all_marks()
-        # elif sync_variant == 'common_only':
-        #     pass
-        #     # await self.sync_sommon()
-        # else:
-        #     self.logger.error(f'sync variant: {sync_variant} is not supported')
+        if sync_variant == 'all':
+            # await self.sync_sommon()
+            await self.synchronizer.sync_all_bodystyles()
+        elif sync_variant == 'bodystyles':
+            await self.synchronizer.sync_all_bodystyles()
+        elif sync_variant == 'marks':
+            await self.synchronizer.sycn_all_marks()
+        elif sync_variant == 'common_only':
+            pass
+            # await self.sync_sommon()
+        else:
+            self.logger.error(f'sync variant: {sync_variant} is not supported')

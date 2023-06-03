@@ -5,7 +5,7 @@ from src.utils.Env import Env
 
 
 class BaseApi:
-    def __init__(self, api_keys: list, handle_rate_limit_error: bool) -> None:
+    def __init__(self, api_keys: list, handle_rate_limit_error: bool = True) -> None:
         self.env = Env
         self.api_keys = api_keys
         self.current_api_key = None

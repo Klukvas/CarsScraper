@@ -8,14 +8,6 @@ from logging import Logger
 import asyncio
 from src.autoRia.models import (
     Categories,
-    Bodystyles,
-    States,
-    Cities,
-    Marks,
-    Models,
-    FuelTypes,
-    Gearboxes,
-    Countries
 )
 from src.autoRia.api.parametersApi import ParametersApi
 
@@ -63,29 +55,6 @@ class SyncParameters:
             error = result.get_error()
             raise ValueError(f"Error with getting data from {api_get_method.__name__}: {error}")
 
-    async def execute_synchronization(self, splitted_coros):
-        for sub_coros_list in splitted_coros:
-            for coro in asyncio.as_completed(sub_coros_list):
-                result = await coro
-                if result.is_ok():
-                    bodystyles = result.get_value()
-                    category_id = int(bodystyles['params_for_save']['category_id'])
-                    inser_params_tasks = []
-                    for bodystyle in bodystyles['data']:
-                        inser_params_tasks.append(
-                            self.parameters_queries.insert_bodystyles(
-                                data={
-                                    'category_id': category_id,
-                                    'name': bodystyle['name'],
-                                    'value': bodystyle['value']
-                                }
-                            )
-                        )
-                    await asyncio.gather(*inser_params_tasks)
-                else:
-                    error = result.get_error()
-                    raise ValueError(f"Error with getting data from bodystyles: {error}")
-
     async def sync_all_bodystyles(self, splitted_coros: list=[]):
         if not splitted_coros:
             categories = await self.parameters_queries.get_form_common_model(model=Categories)
@@ -125,8 +94,12 @@ class SyncParameters:
                         raise ValueError(f"Error with getting data from bodystyles: {error}")
         if calls_with_key_limit:
             self.parameters_api.set_api_key()
-            await self.sync_all_bodystyles(splitted_coros=split_array(arr=calls_with_key_limit, subarray_size=int(self.max_requests / 2)))
-            
+            await self.sync_all_bodystyles(
+                splitted_coros=split_array(
+                    arr=calls_with_key_limit, 
+                    subarray_size=int(self.max_requests / 2)
+                )
+            )
 
     async def sycn_all_marks(self, splitted_coros: list=[]):
         """
@@ -135,7 +108,6 @@ class SyncParameters:
         if not splitted_coros:
             #if it is first call get all categories
             categories = await self.parameters_queries.get_form_common_model(model=Categories)
-            self.logger.debug(f"getting all categories")
             get_marks_coros = [
                 self.parameters_api.get_marks(category.value)
                 for category in categories
@@ -170,7 +142,7 @@ class SyncParameters:
                     for sub_list in split_array(inser_params_data, int(len(inser_params_data) * 0.25)):
                         # create list of tasks for insert
                         inser_params_tasks = [
-                            self.parameters_queries.insert_marks_from_list(data=element)
+                            self.parameters_queries.insert_marks(data=element)
                             for element in sub_list
                         ]
                         self.logger.debug(f"Calling gather with created tasks")
@@ -185,11 +157,7 @@ class SyncParameters:
                     else:
                         raise ValueError(f"Error with getting data from bodystyles: {error}")
         if calls_with_key_limit:
-            try:
-                self.parameters_api.set_api_key()
-            except ValueError as exc:
-                Logger.error(f"Error with setting api key: {exc}")
-                return
+            self.parameters_api.set_api_key()
             await self.sycn_all_marks(
                 splitted_coros=split_array(
                     calls_with_key_limit, 

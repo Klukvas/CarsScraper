@@ -8,3 +8,16 @@ PAGE_COUNT: 100
 MAX_SCRAPPED: 100
 SYNCHRONIZATION_OPTIONS: marks
 COUNT_REQUESTS_PER_HOUR: 30
+
+
+# "Легкові"	1
+# "Мото"	2
+# "Водний транспорт"	3
+# "Спецтехніка"	4
+# "Причепи"	5
+# "Вантажівки"	6
+# "Автобуси"	7
+# "Автобудинки"	8
+# "Повітряний транспорт"	9
+# "Сільгосптехніка"	10
+MAIN_CATEGORY_FOR_SCRAPP: 1

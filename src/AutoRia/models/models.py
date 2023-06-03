@@ -1,11 +1,17 @@
 from __future__ import annotations
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Float
 from datetime import datetime
 from sqlalchemy.orm import mapped_column
 from typing import List
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.autoRia.models.databaseClient import Base
 
+
+class ScrapperInfo(Base):
+    __tablename__ = 'scrapper_info'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    last_page = Column(Integer)
+    last_scrapper_date = Column(DateTime, default=datetime.now)
 
 class Categories(Base):
     __tablename__ = 'categories'
@@ -15,6 +21,10 @@ class Categories(Base):
     bodystyles: Mapped[List["Bodystyles"]] = relationship(back_populates="category")
     marks: Mapped[List["Marks"]] = relationship(back_populates="category")
     models: Mapped[List["Models"]] = relationship(back_populates="category")
+    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="category")
+    gearboxes: Mapped[List["Gearboxes"]] = relationship(back_populates="category")
+
+
 
     name = Column(String)
     value = Column(Integer, unique=True)
@@ -30,7 +40,11 @@ class States(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     value = Column(Integer, unique=True)
-    cities: Mapped[List["Cities"]] = relationship(back_populates='cities')
+    
+    cities: Mapped[List["Cities"]] = relationship(back_populates='state')
+    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="state")
+
+
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
@@ -43,7 +57,10 @@ class Cities(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     value = Column(Integer, unique=True)
+
     state_id: Mapped[int] = mapped_column(ForeignKey('states.id'))
+    state: Mapped["States"] = relationship(back_populates="cities")
+
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
@@ -58,8 +75,10 @@ class Bodystyles(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
+    category: Mapped["Categories"] = relationship(back_populates="bodystyles")
 
-    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="auto_data")
+
+    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="bodystyle")
 
     name = Column(String)
     value = Column(Integer, unique=True)
@@ -75,7 +94,13 @@ class Marks(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
-    models: Mapped[List["Models"]] = relationship(back_populates="marks")
+    category: Mapped["Categories"] = relationship(back_populates="marks")
+
+
+    models: Mapped[List["Models"]] = relationship(back_populates="mark")
+
+    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="mark")
+    
 
     name = Column(String)
     value = Column(Integer, unique=True)
@@ -93,8 +118,15 @@ class Models(Base):
     value = Column(Integer, unique=True)
 
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
+    category: Mapped["Categories"] = relationship(back_populates="models")
+
 
     mark_id: Mapped[int] = mapped_column(ForeignKey("marks.id"))
+    mark: Mapped["Marks"] = relationship(back_populates="models")
+
+    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="model")
+    
+
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
@@ -108,7 +140,7 @@ class FuelTypes(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     value = Column(Integer, unique=True)
-    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="auto_data")
+    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="fuel_type")
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
@@ -121,7 +153,13 @@ class Gearboxes(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     value = Column(Integer, unique=True)
+
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
+    category: Mapped["Categories"] = relationship(back_populates="gearboxes")
+
+    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="gearbox")
+
+    
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
@@ -146,10 +184,16 @@ class AutoData(Base):
     auto_id = Column(Integer, primary_key=True)
 
     body_id: Mapped[int] = mapped_column(ForeignKey("bodystyles.id"))
+    bodystyle: Mapped["Bodystyles"] = relationship(back_populates="auto_data")
+
 
     mark_id: Mapped[int] = mapped_column(ForeignKey("marks.id"))
+    mark: Mapped["Marks"] = relationship(back_populates="auto_data")
+
 
     model_id: Mapped[int] = mapped_column(ForeignKey("models.id"))
+    model: Mapped["Models"] = relationship(back_populates="auto_data")
+
 
     USD = Column(Integer)
     UAH = Column(Integer)
@@ -160,16 +204,21 @@ class AutoData(Base):
     race_int = Column(Integer)
 
     fuel_id: Mapped[int] = mapped_column(ForeignKey("fuel_types.id"))
-    fuel_int = Column(Integer)
+    fuel_type: Mapped["FuelTypes"] = relationship(back_populates="auto_data")
+
+    fuel_int = Column(Float)
     # fuel_name_eng = Column(String)
 
     gearbox_id: Mapped[int] = mapped_column(ForeignKey("gearboxes.id"))
+    gearbox: Mapped["Gearboxes"] = relationship(back_populates="auto_data")
 
     drive_id = Column(Integer)
     drive_name = Column(String)
 
 
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
+    category: Mapped["Categories"] = relationship(back_populates="auto_data")
+
     # category_name_eng = Column(String)
 
     damage = Column(Boolean)
@@ -177,7 +226,11 @@ class AutoData(Base):
     VIN = Column(String)
 
     state_id: Mapped[int] = mapped_column(ForeignKey("states.id"))
+    state: Mapped["States"] = relationship(back_populates="auto_data")
+
 
     city_id: Mapped[int] = mapped_column(ForeignKey("cities.id"))
+    city: Mapped["Cities"] = relationship(back_populates="auto_data")
+
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now) 
