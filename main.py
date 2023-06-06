@@ -1,11 +1,12 @@
 import asyncio
 from src.utils import config_read, Env, Logger
-from src.autoRia.scrapper import Scrapper
+from src.autoRia.scrapper.scrapper import Scrapper
 from src.autoRia.syncParameters import SynchronizerController
 from src.rst.scrapper import Scrapper as rstScrapepr
-from src.autoRia.queries import AutoQueries
+from src.autoRia.queries import AutoQueries, ParametersQueries
 from src.autoRia.models import DatabaseClient
 from src.utils import build_bd_url
+from src.autoRia.scrapper.dataChecker import DataChecker
 
 
 async def scrapper():
@@ -18,12 +19,14 @@ async def scrapper():
     max_scpapped = config['MAX_SCRAPPED']
     if max_scpapped < page_count:
         raise ValueError(f'Value MAX_SCRAPPED must not be lower than PAGE_COUNT at least should be equal to it')
-    env = Env()
     db_url = build_bd_url(env)
     db_client = DatabaseClient(db_url=db_url)
     auto_query = AutoQueries(
         logger=logger,
         db_client = db_client
+    )
+    data_checker = DataChecker(
+        auto_queries=auto_query
     )
     scrapper = Scrapper(
         base_url=base_url,
@@ -51,11 +54,28 @@ def rst_scrapper():
     rstScrapepr().start()
 # if __name__ == '__main__':
 #     rst_scrapper()
+async def test():
+    env = Env()
+    logger = Logger().custom_logger(name='AutoRiaLogger')
+    db_url = build_bd_url(env)
+    db_client = DatabaseClient(db_url=db_url)
+    params_query = ParametersQueries(
+        logger=logger,
+        db_client = db_client
+    )
+    
+    
+    data_checker = DataChecker(
+        params_queries=params_query
+    )
+    await data_checker.setup()
 
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(sync_data())
+    loop.run_until_complete(test())
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(sync_data())
     # loop = asyncio.get_event_loop()
     # loop.run_until_complete(scrapper())
 

@@ -17,7 +17,7 @@ class SearchApi(BaseApi):
         url = f'{self.base_url}/auto/info?api_key={self.current_api_key}&auto_id={auto_id}'
         response = await self.make_http_request(url=url, method=HttpMethods.GET.value)
         return response
-    # check, it is not working
+    # TODO: check, it is not working
     async def get_ids_without_key(self, page: int, count_page:int) -> Union[Ok, Error]:
         url = f'{self.base_url}/auto?order_by=7&page={page}&countpage={count_page}'
         response = await self.make_http_request(url=url, method=HttpMethods.GET.value)

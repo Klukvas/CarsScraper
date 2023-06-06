@@ -27,7 +27,13 @@ class ParametersQueries:
             )
             await session.rollback()
 
-    async def get_form_common_model(self, model) -> None:
+    async def get_distinct_records_from(self, model: Any) -> Union[list, None]:
+        async with self.db_client.session() as session:
+            query = select(model).distinct(model.id)
+            records = await session.execute(query)
+            return records.scalars().all()
+
+    async def get_form_common_model(self, model) -> Any:
         async with self.db_client.session() as session:
             query = select(model)
             categories = await session.execute(query)
