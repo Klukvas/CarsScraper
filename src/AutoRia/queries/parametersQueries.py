@@ -62,14 +62,15 @@ class ParametersQueries:
                 session=session
             )
 
-    async def insert_marks(self, data:Union[list[dict], dict]) -> None:
+    async def insert_marks(self, data:Union[list[dict], dict], added_by_sync: bool = True) -> None:
         async def inserter(mark:dict, session):
-                new_bodystyle = Marks(
+                new_mark = Marks(
                     category_id = mark['category_id'],
                     name = mark['name'],
-                    value = mark['value']
+                    id = mark['id'],
+                    added_by_sync = added_by_sync
                 )
-                session.add(new_bodystyle)
+                session.add(new_mark)
 
         async with self.db_client.session() as session:
             if isinstance(data, list):
