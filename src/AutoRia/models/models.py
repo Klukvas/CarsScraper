@@ -16,7 +16,7 @@ class ScrapperInfo(Base):
 class Categories(Base):
     __tablename__ = 'categories'
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
     
     bodystyles: Mapped[List["Bodystyles"]] = relationship(back_populates="category")
     marks: Mapped[List["Marks"]] = relationship(back_populates="category")
@@ -24,22 +24,18 @@ class Categories(Base):
     auto_data: Mapped[List["AutoData"]] = relationship(back_populates="category")
     gearboxes: Mapped[List["Gearboxes"]] = relationship(back_populates="category")
 
-
-
     name = Column(String)
-    value = Column(Integer, unique=True)
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
-        return f'categories model(id: {self.id}; name: {self.name}; value: {self.value})'
+        return f'categories model(id: {self.id}; name: {self.name}; value: {self.id})'
 
 class States(Base):
     __tablename__ = 'states'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
-    value = Column(Integer, unique=True)
     
     cities: Mapped[List["Cities"]] = relationship(back_populates='state')
     auto_data: Mapped[List["AutoData"]] = relationship(back_populates="state")
@@ -49,30 +45,30 @@ class States(Base):
     created_at = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
-        return f'states model(id: {self.id}; name: {self.name}; value: {self.value})'
+        return f'states model(id: {self.id}; name: {self.name}; value: {self.id})'
 
 class Cities(Base):
     __tablename__ = 'cities'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String)
-    value = Column(Integer, unique=True)
 
     state_id: Mapped[int] = mapped_column(ForeignKey('states.id'))
     state: Mapped["States"] = relationship(back_populates="cities")
+
+    auto_data: Mapped[List["AutoData"]] = relationship(back_populates="city")
 
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
-        return f'cities model(id: {self.id}; name: {self.name}; value: {self.value})'
-
+        return f'cities model(id: {self.id}; name: {self.name}; value: {self.id})'
 
 
 class Bodystyles(Base):
     __tablename__ = 'bodystyles'
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
 
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
     category: Mapped["Categories"] = relationship(back_populates="bodystyles")
@@ -81,17 +77,16 @@ class Bodystyles(Base):
     auto_data: Mapped[List["AutoData"]] = relationship(back_populates="bodystyle")
 
     name = Column(String)
-    value = Column(Integer, unique=True)
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
-        return f'bodystyles model(id: {self.id}; name: {self.name}; value: {self.value})'
+        return f'bodystyles model(id: {self.id}; name: {self.name}; value: {self.id})'
 
 class Marks(Base):
     __tablename__ = 'marks'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
 
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
     category: Mapped["Categories"] = relationship(back_populates="marks")
@@ -103,19 +98,17 @@ class Marks(Base):
     
 
     name = Column(String)
-    value = Column(Integer, unique=True)
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
-        return f'marks model(id: {self.id}; name: {self.name}; value: {self.value})'
+        return f'marks model(id: {self.id}; name: {self.name}; value: {self.id})'
 
 class Models(Base):
     __tablename__ = 'models'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String)
-    value = Column(Integer, unique=True)
 
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
     category: Mapped["Categories"] = relationship(back_populates="models")
@@ -132,27 +125,26 @@ class Models(Base):
 
 
     def __repr__(self):
-        return f'models model(id: {self.id}; name: {self.name}; value: {self.value})'
+        return f'models model(id: {self.id}; name: {self.name}; value: {self.id})'
 
 class FuelTypes(Base):
     __tablename__ = 'fuel_types'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String)
-    value = Column(Integer, unique=True)
+
     auto_data: Mapped[List["AutoData"]] = relationship(back_populates="fuel_type")
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
-        return f'fuel_types model(id: {self.id}; name: {self.name}; value: {self.value})'
+        return f'fuel_types model(id: {self.id}; name: {self.name}; value: {self.id})'
 
 class Gearboxes(Base):
     __tablename__ = 'gearboxes'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String)
-    value = Column(Integer, unique=True)
 
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
     category: Mapped["Categories"] = relationship(back_populates="gearboxes")
@@ -164,19 +156,19 @@ class Gearboxes(Base):
     created_at = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
-        return f'gearboxes model(id: {self.id}; name: {self.name}; value: {self.value})'
+        return f'gearboxes model(id: {self.id}; name: {self.name}; value: {self.id})'
 
 class Countries(Base):
     __tablename__ = 'countries'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String)
-    value = Column(Integer, unique=True)
+
     added_by_sync = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
-        return f'countries model(id: {self.id}; name: {self.name}; value: {self.value})'
+        return f'countries model(id: {self.id}; name: {self.name}; value: {self.id})'
 
 class AutoData(Base):
     __tablename__ = 'auto_data'

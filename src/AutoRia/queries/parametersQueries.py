@@ -37,10 +37,10 @@ class ParametersQueries:
         async with self.db_client.session() as session:
             new_category = model(
                 name = data['name'],
-                value = data['value']
+                id = data['value']
             )
+            session.add(new_category)
             await self.commit_or_revert(
-                record=new_category,
                 session=session
             )
 
@@ -51,8 +51,8 @@ class ParametersQueries:
                 name = data['name'],
                 value = data['value']
             )
+            session.add(new_bodystyle)
             await self.commit_or_revert(
-                record=new_bodystyle,
                 session=session
             )
 

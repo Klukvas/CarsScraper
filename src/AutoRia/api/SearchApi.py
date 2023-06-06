@@ -9,7 +9,6 @@ class SearchApi(BaseApi):
         self.base_url = base_url
 
     async def get_ids(self, paramters:str='') -> Union[Ok, Error]:
-        breakpoint()
         url = f'{self.base_url}/auto/search?api_key={self.current_api_key}&{paramters}'
         response = await self.make_http_request(url=url, method=HttpMethods.GET.value)
         return response

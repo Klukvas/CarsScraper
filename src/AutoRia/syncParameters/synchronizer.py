@@ -38,6 +38,7 @@ class SynchronizerController:
 
     async def sync_sommon(self):
         tasks = []
+        results = []
         sync_attrs = dir(self.common_sync_data)
         for attr in sync_attrs:
             if not attr.startswith('__'):
@@ -49,7 +50,8 @@ class SynchronizerController:
                             model=sync_property['model']
                         )
                     )
-        await asyncio.gather(*tasks)
+
+        results.append( await asyncio.gather(*tasks) )
 
     async def start(self):
         await self.db_client.create_database_if_not_exist(
@@ -67,7 +69,6 @@ class SynchronizerController:
         elif sync_variant == 'marks':
             await self.synchronizer.sycn_all_marks()
         elif sync_variant == 'common_only':
-            pass
-            # await self.sync_sommon()
+            await self.sync_sommon()
         else:
             self.logger.error(f'sync variant: {sync_variant} is not supported')

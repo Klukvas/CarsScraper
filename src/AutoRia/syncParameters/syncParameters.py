@@ -39,21 +39,22 @@ class SyncParameters:
             # get list of all categories
             data = result.get_value()['data']
             # get categories from db
-            current_categories = \
+            current_records = \
                 await self.parameters_queries.get_form_common_model(
                     model=model
                 )
             # get list of ids of categories from db
-            current_categories_ids = [category.value for category in current_categories]
-            for new_category in data:
-                if new_category['value'] not in current_categories_ids:
+            current_records_ids = [category.id for category in current_records]
+            for new_record in data:
+                if new_record['value'] not in current_records_ids:
                     tasks.append(
-                        self.parameters_queries.insert_common_data(new_category, model)
+                        self.parameters_queries.insert_common_data(new_record, model)
                     )
             asyncio.gather(*tasks)
         else:
             error = result.get_error()
-            raise ValueError(f"Error with getting data from {api_get_method.__name__}: {error}")
+            return {"api_get_method": api_get_method, "model": model}
+            # raise ValueError(f"Error with getting data from {api_get_method.__name__}: {error}")
 
     async def sync_all_bodystyles(self, splitted_coros: list=[]):
         if not splitted_coros:

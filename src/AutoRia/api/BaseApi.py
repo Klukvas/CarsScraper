@@ -2,6 +2,7 @@ from typing import Union
 from src.utils.Result import Ok, Error
 import aiohttp
 from src.utils.Env import Env
+import re
 
 
 class BaseApi:
@@ -21,7 +22,7 @@ class BaseApi:
     
     async def make_http_request(
         self, 
-        url: str, 
+        url: str,
         method: str, 
         headers = {}, 
         data: dict={},
@@ -36,8 +37,13 @@ class BaseApi:
                     if self.handle_rate_limit_error:
                         if json_response['error']['code'] == 'OVER_RATE_LIMIT':
                             self.set_api_key()
+                            new_url = re.sub(
+                                r"api_key=[\w|\d]+",
+                                f"api_key={self.current_api_key}",
+                                url
+                            )
                             return await self.make_http_request(
-                                url=url,
+                                url=new_url,
                                 method=method,
                                 headers=headers,
                                 data=data

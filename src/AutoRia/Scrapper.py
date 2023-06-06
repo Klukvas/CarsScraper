@@ -1,8 +1,11 @@
 from typing import Any, Union
 from logging import Logger
+import asyncio
 from src.autoRia.api.searchApi import SearchApi
 from src.utils.Env import Env
 import re
+from src.utils import split_array
+from src.autoRia.queries import AutoQueries
 
 class Scrapper:
 
@@ -12,13 +15,15 @@ class Scrapper:
             api_keys: list,
             page_count: int,
             max_scpapped: int,
-            logger: Logger
+            logger: Logger,
+            auto_query: AutoQueries
         ) -> None:
 
         self.search_api = SearchApi(
             base_url=base_url,
             api_keys=api_keys
         )
+        self.auto_query = auto_query
         self.env = Env()
         self.api_keys = api_keys
         self.page_count = page_count
@@ -27,7 +32,6 @@ class Scrapper:
         self.current_scrapped = 0
         self.logger = logger
         self.current_api_key = None
-
 
     def process_auto_data(self, data: dict) -> dict:
         def parse_fuel(fuel: str) -> float:
@@ -38,8 +42,6 @@ class Scrapper:
             except:
                 fuel = 0.0
             return fuel
-
-        breakpoint()
         data = data['data']
         auto_data: dict = data['autoData']
         parsed_data ={
@@ -71,12 +73,14 @@ class Scrapper:
     async def process_ids(self, ads_id):
         result = await self.search_api.get_auto_info(auto_id=ads_id)
         if result.is_ok():
+            self.logger.debug(f"Get auto info for id: {ads_id}")
             auto_info = result.get_value()
             parsed_result = self.process_auto_data(auto_info)
+            await self.auto_query.insert_data(parsed_result)
             self.current_scrapped += 1
         else:
-            error = auto_info.get_error()
-            print(error)
+            error = result.get_error()
+            self.logger.error(f"Here is some error with getting auto info: {error}")
 
     async def get_ids(self):
         respose = await self.search_api.get_ids(
@@ -84,11 +88,14 @@ class Scrapper:
         )
         if respose.is_ok():
             respose_value = respose.get_value()
-            for ads_id in respose_value['data']['result']['search_result']['ids']:
-                await self.process_ids(ads_id)
+            coros = []
+            for ads_id in respose_value['data']['result']['search_result']['ids'][:3]:
+                coros.append(self.process_ids(ads_id))
+            self.logger.debug(f"Created coros for process ids, coros length: {len(coros)}")
+            await asyncio.gather(*coros)
         else:
-            respose_error = respose.get_error()
-            print(respose_error)
+            error = respose.get_error()
+            self.logger.error(f"Error with getting ids: {error}")
 
     async def start_parse(self):
         self.search_api.set_api_key()
