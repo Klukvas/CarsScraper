@@ -25,8 +25,12 @@ async def scrapper():
         logger=logger,
         db_client = db_client
     )
+    parameters_queries = ParametersQueries(
+        db_client=db_client,
+        logger=logger
+    )
     data_checker = DataChecker(
-        auto_queries=auto_query
+        params_queries=parameters_queries
     )
     scrapper = Scrapper(
         base_url=base_url,
@@ -34,7 +38,8 @@ async def scrapper():
         page_count=page_count,
         max_scpapped=max_scpapped,
         logger=logger,
-        auto_query=auto_query
+        auto_query=auto_query,
+        data_checker=data_checker
     )
 
     await db_client.create_database_if_not_exist(
@@ -72,10 +77,12 @@ async def test():
 
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(test())
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(test())
+
     # loop = asyncio.get_event_loop()
     # loop.run_until_complete(sync_data())
-    # loop = asyncio.get_event_loop()
-    # loop.run_until_complete(scrapper())
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(scrapper())
 

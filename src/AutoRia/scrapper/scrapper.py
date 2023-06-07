@@ -1,11 +1,12 @@
+import re
 from typing import Any, Union
 from logging import Logger
 import asyncio
 from src.autoRia.api.searchApi import SearchApi
 from src.utils.Env import Env
-import re
 from src.utils import split_array
 from src.autoRia.queries import AutoQueries
+from .dataChecker import DataChecker
 
 class Scrapper:
 
@@ -16,13 +17,15 @@ class Scrapper:
             page_count: int,
             max_scpapped: int,
             logger: Logger,
-            auto_query: AutoQueries
+            auto_query: AutoQueries,
+            data_checker: DataChecker
         ) -> None:
 
         self.search_api = SearchApi(
             base_url=base_url,
             api_keys=api_keys
         )
+        self.data_checker = data_checker
         self.auto_query = auto_query
         self.env = Env()
         self.api_keys = api_keys
@@ -75,8 +78,9 @@ class Scrapper:
         if result.is_ok():
             self.logger.debug(f"Get auto info for id: {ads_id}")
             auto_info = result.get_value()
-            parsed_result = self.process_auto_data(auto_info)
-            await self.auto_query.insert_data(parsed_result)
+            await self.data_checker.check_auto_data(auto_info)
+            # parsed_result = self.process_auto_data(auto_info)
+            # await self.auto_query.insert_data(parsed_result)
             self.current_scrapped += 1
         else:
             error = result.get_error()

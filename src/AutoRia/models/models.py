@@ -64,7 +64,6 @@ class Cities(Base):
     def __repr__(self):
         return f'cities model(id: {self.id}; name: {self.name}; value: {self.id})'
 
-
 class Bodystyles(Base):
     __tablename__ = 'bodystyles'
 
