@@ -1,4 +1,7 @@
+from src.utils import log_function_work
 from src.autoRia.queries import ParametersQueries
+import re
+from logging import Logger
 import asyncio
 from src.autoRia.models import (
     Categories,
@@ -15,8 +18,9 @@ from src.autoRia.models import (
 from typing import Dict, Type, List
 
 class DataChecker:
-    def __init__(self, params_queries: ParametersQueries) -> None:
+    def __init__(self, params_queries: ParametersQueries, logger: Logger) -> None:
         self.params_queries = params_queries
+        self.logger = logger
         self.attribute_mapping: Dict[str, Type] = {
             'body_ids': Bodystyles,
             'mark_ids': Marks,
@@ -44,8 +48,6 @@ class DataChecker:
     async def _setup_attribute(self, attribute: str, model_class: Type) -> None:
         records = await self.params_queries.get_distinct_records_from(model_class)
         setattr(self, attribute, [record.id for record in records])
-
-
     
     def create_current_auto_ids(self, data: dict[str, dict]) -> dict:
         def transform_by_weight(relation_ids: dict):
@@ -133,6 +135,7 @@ class DataChecker:
             await self.setup()
         data = raw_auto_data['data']
         current_auto_ids = self.create_current_auto_ids(data)
+        breakpoint()
         # There should be strict sorting
         # From models without relations to models with relations
         for item in sorted(current_auto_ids.items(), key=lambda x: int(x[0])):
@@ -140,8 +143,45 @@ class DataChecker:
             for value in item[1]:
                 coros.append(value['method'](value['id'], data))
             await asyncio.gather(*coros)
+        return self.parse_auto_data(data)
 
-
+    def parse_auto_data(self, data: dict) -> dict:
+        def parse_fuel(fuel: str) -> float:
+            regex = r"\d+(\.\d+)?"
+            fuel_group = re.search(regex, fuel)
+            try:
+                fuel = float(fuel_group.group(0))
+            except:
+                fuel = 0.0
+            return fuel
+        auto_data: dict = data['autoData']
+        parsed_data ={
+                "auto_id": auto_data.get("autoId", None),
+                "body_id": auto_data.get("bodyId", None),
+                "mark_id": data.get("markId", None),
+                "model_id": data.get("modelId", None),
+                "USD": data.get("USD", None),
+                "UAH": data.get("UAH", None),
+                "EUR": data.get("EUR", None),
+                "year": auto_data.get("year", None),
+                "status_id": auto_data.get("statusId", None),
+                "race": auto_data.get("race", None),
+                "race_int": auto_data.get("raceInt", None),
+                "fuel_id":  auto_data.get("fuelId", None),
+                "fuel_int": parse_fuel(auto_data.get("fuelName", "")),
+                "gearbox_id":  auto_data.get("gearBoxId", None),
+                "drive_id": auto_data.get("driveId", None),
+                "drive_name": auto_data.get("driveName", None),
+                "category_id":auto_data.get("categoryId", None),
+                "damage": data['autoInfoBar'].get("damage", None),
+                "href": data.get("linkToView", None),
+                "VIN": data.get("VIN", None),
+                "state_id":  data['stateData'].get("stateId", None),
+                "city_id":  data['stateData'].get("cityId", None),
+        }
+        return parsed_data
+    
+    @log_function_work(print_func_args=False)
     async def check_fuel(self, fuel_id: int, data: dict) -> None:
         if fuel_id not in self.fuel_ids:
             await self.params_queries.insert_common_data(
@@ -154,6 +194,7 @@ class DataChecker:
             )
         self.fuel_ids.append(fuel_id)
 
+    @log_function_work(print_func_args=False)
     async def check_model(self, model_id: int, data: dict) -> None:
         if model_id not in self.model_ids:
             await self.params_queries.insert_model(
@@ -161,11 +202,13 @@ class DataChecker:
                     "category_id": data['autoData']['categoryId'],
                     'name': data['modelNameEng'],
                     'id': model_id,
+                    "mark_id": data['markId']
                 },
                 added_by_sync=False
             )
         self.model_ids.append(model_id)
 
+    @log_function_work(print_func_args=False)
     async def check_gearbox(self, gearbox_id: int, data: dict) -> None:
         if gearbox_id not in self.gearbox_ids:
             await self.params_queries.insert_gearbox(
@@ -178,6 +221,7 @@ class DataChecker:
             )
         self.gearbox_ids.append(gearbox_id)
 
+    @log_function_work(print_func_args=False)
     async def check_bodystyle(self, body_id: int, data: dict) -> None:
         if body_id not in self.body_ids:
             await self.params_queries.insert_bodystyles(
@@ -190,7 +234,7 @@ class DataChecker:
             )
         self.body_ids.append(body_id)
 
-
+    @log_function_work(print_func_args=False)
     async def check_city(self, city_id:int, data:dict) -> None:
         if city_id not in self.city_ids:
             await self.params_queries.insert_cities(
@@ -203,6 +247,7 @@ class DataChecker:
             )
         self.city_ids.append(city_id)
 
+    @log_function_work(print_func_args=False)
     async def check_state(self, state_id: int, data: dict) -> None:
         if state_id not in self.state_ids:
             await self.params_queries.insert_common_data(
@@ -215,6 +260,7 @@ class DataChecker:
             )
         self.state_ids.append(state_id)
 
+    @log_function_work(print_func_args=False)
     async def check_category(self, category_id: int, data: dict) -> None:
         if category_id not in self.category_ids:
             await self.params_queries.insert_common_data(
@@ -226,8 +272,7 @@ class DataChecker:
                 added_by_sync=False
             )
         self.category_ids.append(category_id)
-
-    
+    @log_function_work(print_func_args=False)
     async def check_mark(self, mark_id: int, data: dict) -> None:
         if mark_id not in self.mark_ids:
             await self.params_queries.insert_marks(

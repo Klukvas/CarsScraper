@@ -124,7 +124,7 @@ class Models(Base):
 
 
     def __repr__(self):
-        return f'models model(id: {self.id}; name: {self.name}; value: {self.id})'
+        return f'models model(id: {self.id}; name: {self.name})'
 
 class FuelTypes(Base):
     __tablename__ = 'fuel_types'

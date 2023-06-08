@@ -36,51 +36,16 @@ class Scrapper:
         self.logger = logger
         self.current_api_key = None
 
-    def process_auto_data(self, data: dict) -> dict:
-        def parse_fuel(fuel: str) -> float:
-            regex = r"\d+(\.\d+)?"
-            fuel_group = re.search(regex, fuel)
-            try:
-                fuel = float(fuel_group.group(0))
-            except:
-                fuel = 0.0
-            return fuel
-        data = data['data']
-        auto_data: dict = data['autoData']
-        parsed_data ={
-                "auto_id": auto_data.get("autoId", None),
-                "body_id": auto_data.get("bodyId", None),
-                "mark_id": data.get("markId", None),
-                "model_id": data.get("modelId", None),
-                "USD": data.get("USD", None),
-                "UAH": data.get("UAH", None),
-                "EUR": data.get("EUR", None),
-                "year": auto_data.get("year", None),
-                "status_id": auto_data.get("statusId", None),
-                "race": auto_data.get("race", None),
-                "race_int": auto_data.get("raceInt", None),
-                "fuel_id":  auto_data.get("fuelId", None),
-                "fuel_int": parse_fuel(auto_data.get("fuelName", "")),
-                "gearbox_id":  auto_data.get("gearBoxId", None),
-                "drive_id": auto_data.get("driveId", None),
-                "drive_name": auto_data.get("driveName", None),
-                "category_id":auto_data.get("categoryId", None),
-                "damage": data['autoInfoBar'].get("damage", None),
-                "href": data.get("linkToView", None),
-                "VIN": data.get("VIN", None),
-                "state_id":  data['stateData'].get("stateId", None),
-                "city_id":  data['stateData'].get("cityId", None),
-        }
-        return parsed_data
+    
 
     async def process_ids(self, ads_id):
         result = await self.search_api.get_auto_info(auto_id=ads_id)
         if result.is_ok():
             self.logger.debug(f"Get auto info for id: {ads_id}")
             auto_info = result.get_value()
-            await self.data_checker.check_auto_data(auto_info)
+            parsed_auto_data = await self.data_checker.check_auto_data(auto_info)
             # parsed_result = self.process_auto_data(auto_info)
-            # await self.auto_query.insert_data(parsed_result)
+            await self.auto_query.insert_data(parsed_auto_data)
             self.current_scrapped += 1
         else:
             error = result.get_error()

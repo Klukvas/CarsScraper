@@ -9,3 +9,4 @@ from .utils import (
     split_array
 )
 
+from .DependencyManager import DependencyManager

@@ -22,6 +22,7 @@ class AutoQueries:
             await session.rollback()
 
     async def insert_data(self, data: dict):
+        self.logger.debug(f"Called insert_data with:\n{data}\n")
         async with self.db_client.session() as session:
             new_auto = AutoData(
                 auto_id = data['auto_id'],

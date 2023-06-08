@@ -34,7 +34,7 @@ def split_array(arr: list, subarray_size: int):
 
     return new_arr
 
-def log_function_work(logger:Logger=None):
+def log_function_work(logger:Logger=None, print_func_args=True):
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
@@ -46,7 +46,10 @@ def log_function_work(logger:Logger=None):
                 except:
                     raise ValueError("The logger is not found.")
             # Log the function call with decorator arguments
-            logger.info(f"Calling {func.__name__} function with next data: {args} {kwargs}")
+            initial_message = f"Calling {func.__name__} function"
+            if print_func_args:
+                initial_message = f"{initial_message} with next data: {args} {kwargs}"
+            logger.info(initial_message)
 
             # Call the actual function
             result = await func(*args, **kwargs)

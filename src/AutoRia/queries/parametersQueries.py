@@ -27,7 +27,7 @@ class ParametersQueries:
             await session.commit()
         except IntegrityError:
             self.logger.warning(
-                f"Rollback. Rollback based on error: IntegrityError(duplicate key value)"
+                f"Parameters Queries Rollback. Rollback based on error: IntegrityError(duplicate key value)"
             )
             await session.rollback()
 
@@ -62,12 +62,12 @@ class ParametersQueries:
                 category_id = data['category_id'],
                 name = data['name'],
                 id = data['id'],
+                mark_id = data['mark_id'],
                 added_by_sync=added_by_sync
             )
             session.add(new_model)
-            await self.commit_or_revert(
-                session=session
-            )
+            await session.commit()
+            # await self.commit_or_revert(session)
 
     async def insert_bodystyles(self, data: dict, added_by_sync: bool = True)-> None:
         async with self.db_client.session() as session:
