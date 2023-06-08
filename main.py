@@ -5,7 +5,6 @@ from src.utils.DependencyManager import DependencyManager
 
 async def scrapper():
     dpm = DependencyManager()
-    dpm.setup_dependencies()
     scrapper = dpm.scrapper
     db_client = dpm.db_client
     env = dpm.env

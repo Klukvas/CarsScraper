@@ -1,11 +1,3 @@
-#     await db_client.create_database_if_not_exist(
-#             user=env.pg_user,
-#             database=env.pg_auto_db_name,
-#             password=env.pg_password
-#         )
-#     await db_client.init_models()
-
-#     await scrapper.start_parse()
 from .Env import Env
 from .Logger import Logger
 from .utils import config_read, build_bd_url
@@ -43,8 +35,8 @@ class DependencyManager(metaclass=SingletonMeta):
     def data_checker(self) -> DataChecker:
         if DataChecker not in self._dependencies.keys():
             data_checker = DataChecker(
-                params_queries=self._dependencies[ParametersQueries],
-                logger=self._dependencies[Logger]
+                params_queries=self.parameters_queries,
+                logger=self.logger
             )
             self._dependencies[DataChecker] = data_checker
         return self._dependencies[DataChecker]

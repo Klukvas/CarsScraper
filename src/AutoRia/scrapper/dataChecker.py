@@ -122,7 +122,7 @@ class DataChecker:
             raise Exception(f"Do not found some id: {empty_id}")
         return transform_by_weight(relation_ids)
 
-    async def check_auto_data(self, raw_auto_data: dict):
+    async def check_auto_data(self, raw_auto_data: dict) -> dict:
         """
         method take new raw auto data
         and check if all ids exists if db
@@ -135,9 +135,6 @@ class DataChecker:
             await self.setup()
         data = raw_auto_data['data']
         current_auto_ids = self.create_current_auto_ids(data)
-        breakpoint()
-        # There should be strict sorting
-        # From models without relations to models with relations
         for item in sorted(current_auto_ids.items(), key=lambda x: int(x[0])):
             coros = []
             for value in item[1]:
