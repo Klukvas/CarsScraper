@@ -53,7 +53,7 @@ class Scrapper:
             return
         else:
             error = result.get_error()
-            if error['error']['error']['code'] == 'OVER_RATE_LIMIT':
+            if error.get('error', {}).get('error', {}).get('code', '') == 'OVER_RATE_LIMIT':
                 return auto_id
             self.logger.error(f"Here is some error with getting auto info: {error}")
 
@@ -78,7 +78,7 @@ class Scrapper:
         if auto_id_with_failed_process:
             try:
                 self.search_api.set_api_key()
-                self.get_ids(auto_id_with_failed_process)
+                await self.get_ids(auto_id_with_failed_process)
             except ValueError:
                 self.logger.error(f"All API keys are used. Summary:\nscrapped: {self.current_scrapped}")
 
@@ -88,3 +88,4 @@ class Scrapper:
         for _ in range(pages_for_scrapp):
             await self.get_ids()
             self.current_page += 1
+        self.logger.info(f"Finised. Summary:\npages: {self.current_page}\ntotal scrapped: {self.current_scrapped}")

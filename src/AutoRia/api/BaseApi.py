@@ -30,7 +30,10 @@ class BaseApi:
     ) -> Union[Ok, Error]:
         async with aiohttp.ClientSession() as session:
             async with session.request(method, url, ssl=False) as response:
-                json_response = await response.json()
+                try:
+                    json_response = await response.json()
+                except aiohttp.ContentTypeError:
+                    return Error({'error':await response.text(), 'params_for_save': params_for_save})
                 if response.ok:
                     return Ok({'data': json_response, 'params_for_save': params_for_save})
                 else:

@@ -3,14 +3,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.asyncio import(
     create_async_engine,
     AsyncSession,
-    async_sessionmaker,
     async_scoped_session
 )
 from sqlalchemy.pool import AsyncAdaptedQueuePool
 from asyncio import current_task
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_scoped_session
 from sqlalchemy.orm import sessionmaker
-
 
 Base = declarative_base()
 
@@ -63,3 +61,7 @@ class DatabaseClient:
         async with self.engine.begin() as conn:
             # await conn.run_sync(Base.metadata.drop_all)
             await conn.run_sync(Base.metadata.create_all)
+
+    
+    def get_engine(self):
+        return self.engine
