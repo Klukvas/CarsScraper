@@ -1,0 +1,5 @@
+1. Add variant of parse: 
+    - from New to old ads
+        - for small count(from 0 to 100)
+    - from old to new (need record to db)
+        - for large count (from 100)
