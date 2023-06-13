@@ -1,40 +1,32 @@
-import re
 from typing import Any, Union
 from logging import Logger
 import asyncio
 from src.autoRia.api.searchApi import SearchApi
 from src.utils.Env import Env
 from src.utils import split_array
-from src.autoRia.queries import AutoQueries
+from src.dataBase.queries import AutoQueries
 from .dataChecker import DataChecker
 
 class Scrapper:
 
     def __init__(
             self,
-            base_url: str,
-            api_keys: list,
             page_count: int,
             max_scpapped: int,
             logger: Logger,
             auto_query: AutoQueries,
-            data_checker: DataChecker
+            data_checker: DataChecker,
+            search_api: SearchApi
         ) -> None:
-
-        self.search_api = SearchApi(
-            base_url=base_url,
-            api_keys=api_keys
-        )
+        self.search_api = search_api
         self.data_checker = data_checker
         self.auto_query = auto_query
         self.env = Env()
-        self.api_keys = api_keys
         self.page_count = page_count
         self.max_scpapped = max_scpapped
         self.current_page = 0
         self.current_scrapped = 0
         self.logger = logger
-        self.current_api_key = None
 
     async def handle_rate_limit_error(self):
         pass
@@ -53,8 +45,12 @@ class Scrapper:
             return
         else:
             error = result.get_error()
-            if error.get('error', {}).get('error', {}).get('code', '') == 'OVER_RATE_LIMIT':
-                return auto_id
+            try:
+                if error.get('error', {}).get('error', {}).get('code', '') == 'OVER_RATE_LIMIT':
+                    return auto_id
+            except AttributeError as err:
+                self.logger.error(f'!!! Uncaught error with getting auto info: {err}')
+
             self.logger.error(f"Here is some error with getting auto info: {error}")
 
     async def get_ids(self, auto_ids: list = []):

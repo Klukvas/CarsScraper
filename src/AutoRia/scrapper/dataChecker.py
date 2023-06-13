@@ -1,9 +1,9 @@
 from src.utils import log_function_work
-from src.autoRia.queries import ParametersQueries
+from src.dataBase.queries import ParametersQueries
 import re
 from logging import Logger
 import asyncio
-from src.autoRia.models import (
+from src.dataBase.models import (
     Categories,
     Bodystyles,
     States,

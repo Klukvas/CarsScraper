@@ -1,17 +1,15 @@
 from typing import Any
 from src.autoRia.api.parametersApi import ParametersApi
-from src.autoRia.queries.parametersQueries import ParametersQueries
+from src.dataBase.queries import ParametersQueries
 from typing import Callable, Union
 from src.utils.Result import Ok, Error
 from src.utils import split_array
 from logging import Logger
 import asyncio
-from src.autoRia.models import (
-    Categories,
-)
+from src.dataBase.models import Categories
 from src.autoRia.api.parametersApi import ParametersApi
 
-from src.autoRia.models.databaseClient import DatabaseClient
+from src.dataBase.models import DatabaseClient
 
 
 class SyncParameters:

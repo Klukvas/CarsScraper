@@ -1,7 +1,10 @@
 from .Env import Env
 from .Logger import Logger
 from .utils import config_read, build_bd_url
-from src.autoRia import DatabaseClient, AutoQueries, ParametersQueries, DataChecker, Scrapper
+from src.autoRia import DataChecker, Scrapper
+from src.dataBase.models import DatabaseClient
+from src.dataBase.queries import AutoQueries, ParametersQueries
+from src.autoRia.api import SearchApi
 
 class SingletonMeta(type):
     """
@@ -26,6 +29,17 @@ class DependencyManager(metaclass=SingletonMeta):
 
     def __init__(self) -> None:
         self._dependencies = {}
+
+    @property
+    def search_api(self) -> SearchApi:
+        if SearchApi not in self._dependencies.keys():
+            search_api = SearchApi(
+                base_url=self.base_url,
+                api_keys=self.api_keys
+            )
+            self._dependencies[SearchApi] = search_api
+        return self._dependencies[SearchApi]
+
 
     @property
     def current_config(self) -> dict:
@@ -91,8 +105,7 @@ class DependencyManager(metaclass=SingletonMeta):
     def scrapper(self) -> Scrapper:
         if Scrapper not in self._dependencies.keys():
             scrapper = Scrapper(
-                base_url=self.base_url,
-                api_keys=self.api_keys,
+                search_api=self.search_api,
                 page_count=self.page_count,
                 max_scpapped=self.max_scpapped,
                 logger=self.logger,

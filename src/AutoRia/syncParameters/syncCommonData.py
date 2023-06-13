@@ -1,4 +1,4 @@
-from src.autoRia.models import (
+from src.dataBase.models import (
     Categories,
     Countries,
     FuelTypes,

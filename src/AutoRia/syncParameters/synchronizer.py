@@ -1,10 +1,10 @@
 import asyncio
 from src.autoRia.api import ParametersApi
-from src.autoRia.models import DatabaseClient
 from src.utils import build_bd_url, config_read, Env, Logger as CustomLogger
-from src.autoRia.queries import ParametersQueries
 from .syncCommonData import SyncCommonData
 from .syncParameters import SyncParameters
+from src.dataBase.queries import ParametersQueries
+from src.dataBase.models import DatabaseClient
 
 
 class SynchronizerController:
