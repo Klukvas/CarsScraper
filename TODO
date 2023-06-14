@@ -3,3 +3,4 @@
         - for small count(from 0 to 100)
     - from old to new (need record to db)
         - for large count (from 100)
+2. Add cli commands to run auto ria scrapper \ rst scrapper \ scrapper sync etc

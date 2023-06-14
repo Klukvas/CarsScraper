@@ -246,11 +246,14 @@ def get_main_market_data_view(metadata):
             AutoData.mark_id,
             Models.name.label('model_name'),
             AutoData.model_id,
-            AutoData.USD.label('price')
+            AutoData.USD.label('price'),
+            Bodystyles.name.label('bodystyle'),
+            AutoData.body_id.label('body_id')
         )
     q = q.outerjoin(Models, Models.id == AutoData.model_id)
     q = q.outerjoin(Marks, Marks.id == AutoData.mark_id)
-    q = q.group_by(AutoData.auto_id, Marks.name, Models.name)
+    q = q.outerjoin(Bodystyles, Bodystyles.id == AutoData.body_id)
+    q = q.group_by(AutoData.auto_id, Marks.name, Models.name, Bodystyles.name)
     main_market_data_view = view(
         "main_market_data_view",
         metadata,
@@ -258,10 +261,9 @@ def get_main_market_data_view(metadata):
         
     )
     return main_market_data_view
-main_market_data_view = get_main_market_data_view(Base.metadata)
 
 class MainMarketDataView(Base):
-        __table__ = main_market_data_view
+        __table__ = get_main_market_data_view(Base.metadata)
 
         def __repr__(self):
             return f"MainMarketDataView({self.auto_id} {self.mark_name} {self.model_name})"

@@ -24,3 +24,38 @@ async def count_marks():
 async def count_models():
     records = await q.count_models()
     return records
+
+@app.get("/marks_price")
+async def marks_price():
+    records = await q.marks_price()
+    return records
+
+@app.get("/models_price")
+async def models_price():
+    records = await q.models_price()
+    return records
+
+@app.get("/avg_market_price")
+async def avg_market_price():
+    records = await q.avg_market_price()
+    return records
+
+@app.get("/count_autos")
+async def count_autos():
+    records = await q.count_autos()
+    return records
+
+@app.get("/avg_price_by_year")
+async def avg_price_by_year():
+    records = await q.avg_price_by_year()
+    return records
+
+@app.get("/bodystyle_count")
+async def bodystyle_count():
+    records = await q.bodystyle_count()
+    return records
+
+@app.get("/bodystyle_price")
+async def bodystyle_price():
+    records = await q.bodystyle_price()
+    return records
