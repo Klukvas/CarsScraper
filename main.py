@@ -14,7 +14,7 @@ async def scrapper():
             database=env.pg_auto_db_name,
             password=env.pg_password
         )
-    await db_client.init_models()
+    await db_client.init_models_and_views()
 
     await scrapper.start_parse()
 

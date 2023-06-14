@@ -57,7 +57,7 @@ class DatabaseClient:
             )
             await sys_conn.close()
 
-    async def init_models(self):
+    async def init_models_and_views(self):
         async with self.engine.begin() as conn:
             # await conn.run_sync(Base.metadata.drop_all)
             await conn.run_sync(Base.metadata.create_all)

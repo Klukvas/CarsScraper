@@ -4,7 +4,7 @@ import asyncio
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
-from src.dataBase.models import (
+from src.dataBase.models.models import (
     Bodystyles,
     Marks,
     Cities,

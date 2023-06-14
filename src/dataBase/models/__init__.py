@@ -10,5 +10,4 @@ from .models import (
     Countries,
     AutoData
 )
-from .databaseClient import DatabaseClient
-
+from .databaseClient import DatabaseClient, Base

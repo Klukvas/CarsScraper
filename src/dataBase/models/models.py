@@ -1,10 +1,21 @@
 from __future__ import annotations
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Float
+from sqlalchemy import (
+    Column, 
+    Integer, 
+    String, 
+    ForeignKey, 
+    Boolean, 
+    DateTime,
+    Float,
+    select
+)
 from datetime import datetime
 from sqlalchemy.orm import mapped_column
 from typing import List
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .databaseClient import Base
+from .views import view
+
 
 
 class ScrapperInfo(Base):
@@ -225,3 +236,32 @@ class AutoData(Base):
 
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now) 
+
+
+def get_main_market_data_view(metadata):
+    q = select(
+            AutoData.auto_id,
+            AutoData.year,
+            Marks.name.label('mark_name'),
+            AutoData.mark_id,
+            Models.name.label('model_name'),
+            AutoData.model_id,
+            AutoData.USD.label('price')
+        )
+    q = q.outerjoin(Models, Models.id == AutoData.model_id)
+    q = q.outerjoin(Marks, Marks.id == AutoData.mark_id)
+    q = q.group_by(AutoData.auto_id, Marks.name, Models.name)
+    main_market_data_view = view(
+        "main_market_data_view",
+        metadata,
+        q
+        
+    )
+    return main_market_data_view
+main_market_data_view = get_main_market_data_view(Base.metadata)
+
+class MainMarketDataView(Base):
+        __table__ = main_market_data_view
+
+        def __repr__(self):
+            return f"MainMarketDataView({self.auto_id} {self.mark_name} {self.model_name})"
