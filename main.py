@@ -3,6 +3,8 @@ from src.autoRia.syncParameters import SynchronizerController
 from src.rst.scrapper import Scrapper as rstScrapepr
 from src.utils.DependencyManager import DependencyManager
 
+from src.dataServer.api import app
+
 async def scrapper():
     dpm = DependencyManager()
     scrapper = dpm.scrapper
@@ -26,6 +28,11 @@ def rst_scrapper():
     rstScrapepr().start()
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(scrapper())
+    from dotenv import load_dotenv
+    load_dotenv()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=5001, log_level="info")
+
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(scrapper())
 

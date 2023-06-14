@@ -8,6 +8,7 @@ from .models import (
     FuelTypes,
     Gearboxes,
     Countries,
-    AutoData
+    AutoData,
+    MainMarketDataView
 )
 from .databaseClient import DatabaseClient, Base
