@@ -2,8 +2,8 @@ import asyncio
 from src.autoRia.syncParameters import SynchronizerController
 from src.rst.scrapper import Scrapper as rstScrapepr
 from src.utils.DependencyManager import DependencyManager
-
-from src.dataServer.api import app
+from src.backend.api import app
+import sys
 
 async def scrapper():
     dpm = DependencyManager()
@@ -27,10 +27,26 @@ async def sync_data(sync_variant: str='all'):
 def rst_scrapper():
     rstScrapepr().start()
 
-if __name__ == '__main__':
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5001, log_level="info")
+def main():
+    if len(sys.argv) < 2:
+        print("Please provide a command.")
+        return
+    command = sys.argv[1]
+    if command == "runserver" or command == "rs":
+        import uvicorn
+        uvicorn.run(app, host="0.0.0.0", port=5001, log_level="info")
+    elif command == "ria_scrapper" or command == "rsc":
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(scrapper())
+    else:
+        print("Unknown command.")
 
-    # loop = asyncio.get_event_loop()
-    # loop.run_until_complete(scrapper())
+
+
+
+if __name__ == '__main__':
+    main()
+    
+
+    
 

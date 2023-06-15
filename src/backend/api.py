@@ -1,12 +1,22 @@
 
 
 from fastapi import FastAPI
-
-import sqlalchemy as sa
+from fastapi.middleware.cors import CORSMiddleware
 from .queries import ServerQueries
 
 
 app = FastAPI()
+
+app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Replace with your React app's URL
+    allow_credentials=True,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 q = ServerQueries()
 
