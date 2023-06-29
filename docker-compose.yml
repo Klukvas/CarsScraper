@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: ./
+      dockerfile: ./src/backend/Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./api:/usr/src/app
+    environment:
+      - REDIS_HOST=redis
+      - PG_USER=postgres
+      - PG_HOST=database
+      - PG_PORT=5430
+      - PG_PASSWORD=root
+      - PG_AUTO_DB_NAME=auto_info
+    depends_on:
+      - redis
+      - database
+
+  # worker:
+  #   build: ./api
+  #   command: celery -A tasks worker --loglevel=info --logfile=logs/celery.log
+  #   volumes:
+  #     - ./api:/usr/src/app
+  #   environment:
+  #     - CELERY_BROKER_URL=redis://redis:6379/0
+  #     - CELERY_RESULT_BACKEND=db+postgresql://user:password@database:5432/alpha
+  #   depends_on:
+  #     - api
+  #     - redis
+  #     - database
+
+  redis:
+    image: redis:latest
+
+  database:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./auto_info_v1.1.sql:/docker-entrypoint-initdb.d/auto_info_v1.1.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_PORT=5430
+    ports:
+      - "5430:5430"
+    user: postgres
+
+volumes:
+  postgres_data:

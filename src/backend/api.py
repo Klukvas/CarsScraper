@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from .queries import ServerQueries
 import redis
 import json
-
+from src.utils import Env
+e = Env()
 
 app = FastAPI()
 
@@ -14,29 +15,24 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Replace with your React app's URL
+    allow_origins=["*"],  # Replace with your React app's URL
     allow_credentials=True,
     allow_methods=["GET"],
     allow_headers=["*"],
 )
 
 q = ServerQueries()
-redis = redis.StrictRedis(host='localhost', port=6379, decode_responses=True)
+redis = redis.StrictRedis(
+    host=e._redis_host, 
+    port=e.redis_port, 
+    decode_responses=True
+)
 
-
-# @app.on_event("startup")
-# async def startup_event():
-#     global redis
-#     redis_pool = aioredis.ConnectionPool.from_url(
-#         'redis://localhost', 
-#         max_connections=10
-#     )
-#     redis = aioredis.Redis(connection_pool=redis_pool)
 
 @app.on_event("shutdown")
 async def shutdown_event():
     if redis is not None:
-        await redis.close()
+        redis.close()
 
 @app.get("/")
 def read_root():

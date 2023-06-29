@@ -11,6 +11,8 @@ class Env:
         self._pg_port: str = os.environ['PG_PORT']
         self._pg_password: str = os.environ['PG_PASSWORD']
         self._pg_auto_db_name: str = os.environ['PG_AUTO_DB_NAME']
+        self._redis_port: str = os.environ['REDIS_PORT']
+        self._redis_host: str = os.environ['REDIS_HOST']
 
     @property
     def autoria_config_path(self) -> str:
@@ -35,3 +37,11 @@ class Env:
     @property
     def pg_password(self) -> str:
         return self._pg_password
+    
+    @property
+    def redis_host(self) -> str:
+        return self._redis_host
+    
+    @property
+    def redis_port(self) -> str:
+        return self._redis_port
