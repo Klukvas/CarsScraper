@@ -1,5 +1,6 @@
+from logging import Logger
 from .Env import Env
-from .Logger import Logger
+from .Logger import Logger as cLogger
 from .utils import config_read, build_bd_url
 from src.autoRia import DataChecker, Scrapper
 from src.dataBase.models import DatabaseClient
@@ -57,10 +58,10 @@ class DependencyManager(metaclass=SingletonMeta):
 
     @property
     def logger(self) -> Logger:
-        if Logger not in self._dependencies.keys():
-            logger = Logger().custom_logger(name='AutoRiaLogger')
-            self._dependencies[Logger] = logger
-        return self._dependencies[Logger]
+        if cLogger not in self._dependencies.keys():
+            logger = cLogger().custom_logger(name='AutoRiaLogger')
+            self._dependencies[cLogger] = logger
+        return self._dependencies[cLogger]
 
     @property
     def parameters_queries(self) -> ParametersQueries:
@@ -97,6 +98,7 @@ class DependencyManager(metaclass=SingletonMeta):
     @property
     def db_client(self) -> DatabaseClient:
         if DatabaseClient not in self._dependencies.keys():
+            self.logger.info(f'Creating db client with url: {self.db_url}')
             db_client = DatabaseClient(self.db_url)
             self._dependencies[DatabaseClient] = db_client
         return self._dependencies[DatabaseClient]

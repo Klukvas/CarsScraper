@@ -1,4 +1,4 @@
-FROM node:13.12.0-alpine
+FROM node:18.16-bullseye
 
 # set working directory
 
@@ -6,10 +6,10 @@ FROM node:13.12.0-alpine
 ENV PATH node_modules/.bin:$PATH
 
 # install app dependencies
-COPY ./frontend/package.json ./
-COPY ./frontend/package-lock.json ./
+COPY ./frontend .
+# COPY ./frontend/package-lock.json ./
 RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g --silent
+
 
 # add app
 COPY . ./

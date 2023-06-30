@@ -5,6 +5,31 @@
 -- Dumped from database version 15.3
 -- Dumped by pg_dump version 15.3
 
+-- Started on 2023-06-30 13:02:18 EEST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3725 (class 1262 OID 16798)
+-- Name: auto_info; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE auto_info WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'C';
+
+
+ALTER DATABASE auto_info OWNER TO postgres;
+
+\connect auto_info
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -21,6 +46,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- TOC entry 235 (class 1259 OID 16918)
 -- Name: auto_data; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -55,6 +81,7 @@ CREATE TABLE public.auto_data (
 ALTER TABLE public.auto_data OWNER TO postgres;
 
 --
+-- TOC entry 234 (class 1259 OID 16917)
 -- Name: auto_data_auto_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -70,6 +97,8 @@ CREATE SEQUENCE public.auto_data_auto_id_seq
 ALTER TABLE public.auto_data_auto_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3726 (class 0 OID 0)
+-- Dependencies: 234
 -- Name: auto_data_auto_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -77,6 +106,7 @@ ALTER SEQUENCE public.auto_data_auto_id_seq OWNED BY public.auto_data.auto_id;
 
 
 --
+-- TOC entry 227 (class 1259 OID 16857)
 -- Name: bodystyles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -92,6 +122,7 @@ CREATE TABLE public.bodystyles (
 ALTER TABLE public.bodystyles OWNER TO postgres;
 
 --
+-- TOC entry 226 (class 1259 OID 16856)
 -- Name: bodystyles_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -107,6 +138,8 @@ CREATE SEQUENCE public.bodystyles_id_seq
 ALTER TABLE public.bodystyles_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3727 (class 0 OID 0)
+-- Dependencies: 226
 -- Name: bodystyles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -114,6 +147,7 @@ ALTER SEQUENCE public.bodystyles_id_seq OWNED BY public.bodystyles.id;
 
 
 --
+-- TOC entry 217 (class 1259 OID 16807)
 -- Name: categories; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -128,6 +162,7 @@ CREATE TABLE public.categories (
 ALTER TABLE public.categories OWNER TO postgres;
 
 --
+-- TOC entry 216 (class 1259 OID 16806)
 -- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -143,6 +178,8 @@ CREATE SEQUENCE public.categories_id_seq
 ALTER TABLE public.categories_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3728 (class 0 OID 0)
+-- Dependencies: 216
 -- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -150,6 +187,7 @@ ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
 
 
 --
+-- TOC entry 225 (class 1259 OID 16843)
 -- Name: cities; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -165,6 +203,7 @@ CREATE TABLE public.cities (
 ALTER TABLE public.cities OWNER TO postgres;
 
 --
+-- TOC entry 224 (class 1259 OID 16842)
 -- Name: cities_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -180,6 +219,8 @@ CREATE SEQUENCE public.cities_id_seq
 ALTER TABLE public.cities_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3729 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: cities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -187,6 +228,7 @@ ALTER SEQUENCE public.cities_id_seq OWNED BY public.cities.id;
 
 
 --
+-- TOC entry 223 (class 1259 OID 16834)
 -- Name: countries; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -201,6 +243,7 @@ CREATE TABLE public.countries (
 ALTER TABLE public.countries OWNER TO postgres;
 
 --
+-- TOC entry 222 (class 1259 OID 16833)
 -- Name: countries_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -216,6 +259,8 @@ CREATE SEQUENCE public.countries_id_seq
 ALTER TABLE public.countries_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3730 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -223,6 +268,7 @@ ALTER SEQUENCE public.countries_id_seq OWNED BY public.countries.id;
 
 
 --
+-- TOC entry 221 (class 1259 OID 16825)
 -- Name: fuel_types; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -237,6 +283,7 @@ CREATE TABLE public.fuel_types (
 ALTER TABLE public.fuel_types OWNER TO postgres;
 
 --
+-- TOC entry 220 (class 1259 OID 16824)
 -- Name: fuel_types_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -252,6 +299,8 @@ CREATE SEQUENCE public.fuel_types_id_seq
 ALTER TABLE public.fuel_types_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3731 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: fuel_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -259,6 +308,7 @@ ALTER SEQUENCE public.fuel_types_id_seq OWNED BY public.fuel_types.id;
 
 
 --
+-- TOC entry 231 (class 1259 OID 16885)
 -- Name: gearboxes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -274,6 +324,7 @@ CREATE TABLE public.gearboxes (
 ALTER TABLE public.gearboxes OWNER TO postgres;
 
 --
+-- TOC entry 230 (class 1259 OID 16884)
 -- Name: gearboxes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -289,6 +340,8 @@ CREATE SEQUENCE public.gearboxes_id_seq
 ALTER TABLE public.gearboxes_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3732 (class 0 OID 0)
+-- Dependencies: 230
 -- Name: gearboxes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -296,6 +349,7 @@ ALTER SEQUENCE public.gearboxes_id_seq OWNED BY public.gearboxes.id;
 
 
 --
+-- TOC entry 239 (class 1259 OID 17033)
 -- Name: main_market_data_view; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -315,6 +369,7 @@ SELECT
 ALTER TABLE public.main_market_data_view OWNER TO postgres;
 
 --
+-- TOC entry 229 (class 1259 OID 16871)
 -- Name: marks; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -330,6 +385,7 @@ CREATE TABLE public.marks (
 ALTER TABLE public.marks OWNER TO postgres;
 
 --
+-- TOC entry 228 (class 1259 OID 16870)
 -- Name: marks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -345,6 +401,8 @@ CREATE SEQUENCE public.marks_id_seq
 ALTER TABLE public.marks_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3733 (class 0 OID 0)
+-- Dependencies: 228
 -- Name: marks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -352,6 +410,7 @@ ALTER SEQUENCE public.marks_id_seq OWNED BY public.marks.id;
 
 
 --
+-- TOC entry 233 (class 1259 OID 16899)
 -- Name: models; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -368,6 +427,7 @@ CREATE TABLE public.models (
 ALTER TABLE public.models OWNER TO postgres;
 
 --
+-- TOC entry 232 (class 1259 OID 16898)
 -- Name: models_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -383,6 +443,8 @@ CREATE SEQUENCE public.models_id_seq
 ALTER TABLE public.models_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3734 (class 0 OID 0)
+-- Dependencies: 232
 -- Name: models_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -390,6 +452,7 @@ ALTER SEQUENCE public.models_id_seq OWNED BY public.models.id;
 
 
 --
+-- TOC entry 238 (class 1259 OID 16981)
 -- Name: old_count_by_mark_model; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -409,6 +472,7 @@ CREATE VIEW public.old_count_by_mark_model AS
 ALTER TABLE public.old_count_by_mark_model OWNER TO postgres;
 
 --
+-- TOC entry 237 (class 1259 OID 16976)
 -- Name: old_count_marks; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -424,6 +488,7 @@ CREATE VIEW public.old_count_marks AS
 ALTER TABLE public.old_count_marks OWNER TO postgres;
 
 --
+-- TOC entry 236 (class 1259 OID 16967)
 -- Name: old_marks_price_year; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -438,6 +503,7 @@ SELECT
 ALTER TABLE public.old_marks_price_year OWNER TO postgres;
 
 --
+-- TOC entry 215 (class 1259 OID 16800)
 -- Name: scrapper_info; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -451,6 +517,7 @@ CREATE TABLE public.scrapper_info (
 ALTER TABLE public.scrapper_info OWNER TO postgres;
 
 --
+-- TOC entry 214 (class 1259 OID 16799)
 -- Name: scrapper_info_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -466,6 +533,8 @@ CREATE SEQUENCE public.scrapper_info_id_seq
 ALTER TABLE public.scrapper_info_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3735 (class 0 OID 0)
+-- Dependencies: 214
 -- Name: scrapper_info_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -473,6 +542,7 @@ ALTER SEQUENCE public.scrapper_info_id_seq OWNED BY public.scrapper_info.id;
 
 
 --
+-- TOC entry 219 (class 1259 OID 16816)
 -- Name: states; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -487,6 +557,7 @@ CREATE TABLE public.states (
 ALTER TABLE public.states OWNER TO postgres;
 
 --
+-- TOC entry 218 (class 1259 OID 16815)
 -- Name: states_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -502,6 +573,8 @@ CREATE SEQUENCE public.states_id_seq
 ALTER TABLE public.states_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3736 (class 0 OID 0)
+-- Dependencies: 218
 -- Name: states_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -509,6 +582,7 @@ ALTER SEQUENCE public.states_id_seq OWNED BY public.states.id;
 
 
 --
+-- TOC entry 3515 (class 2604 OID 16921)
 -- Name: auto_data auto_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -516,6 +590,7 @@ ALTER TABLE ONLY public.auto_data ALTER COLUMN auto_id SET DEFAULT nextval('publ
 
 
 --
+-- TOC entry 3511 (class 2604 OID 16860)
 -- Name: bodystyles id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -523,6 +598,7 @@ ALTER TABLE ONLY public.bodystyles ALTER COLUMN id SET DEFAULT nextval('public.b
 
 
 --
+-- TOC entry 3506 (class 2604 OID 16810)
 -- Name: categories id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -530,6 +606,7 @@ ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
+-- TOC entry 3510 (class 2604 OID 16846)
 -- Name: cities id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -537,6 +614,7 @@ ALTER TABLE ONLY public.cities ALTER COLUMN id SET DEFAULT nextval('public.citie
 
 
 --
+-- TOC entry 3509 (class 2604 OID 16837)
 -- Name: countries id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -544,6 +622,7 @@ ALTER TABLE ONLY public.countries ALTER COLUMN id SET DEFAULT nextval('public.co
 
 
 --
+-- TOC entry 3508 (class 2604 OID 16828)
 -- Name: fuel_types id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -551,6 +630,7 @@ ALTER TABLE ONLY public.fuel_types ALTER COLUMN id SET DEFAULT nextval('public.f
 
 
 --
+-- TOC entry 3513 (class 2604 OID 16888)
 -- Name: gearboxes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -558,6 +638,7 @@ ALTER TABLE ONLY public.gearboxes ALTER COLUMN id SET DEFAULT nextval('public.ge
 
 
 --
+-- TOC entry 3512 (class 2604 OID 16874)
 -- Name: marks id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -565,6 +646,7 @@ ALTER TABLE ONLY public.marks ALTER COLUMN id SET DEFAULT nextval('public.marks_
 
 
 --
+-- TOC entry 3514 (class 2604 OID 16902)
 -- Name: models id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -572,6 +654,7 @@ ALTER TABLE ONLY public.models ALTER COLUMN id SET DEFAULT nextval('public.model
 
 
 --
+-- TOC entry 3505 (class 2604 OID 16803)
 -- Name: scrapper_info id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -579,6 +662,7 @@ ALTER TABLE ONLY public.scrapper_info ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- TOC entry 3507 (class 2604 OID 16819)
 -- Name: states id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -586,6 +670,8 @@ ALTER TABLE ONLY public.states ALTER COLUMN id SET DEFAULT nextval('public.state
 
 
 --
+-- TOC entry 3719 (class 0 OID 16918)
+-- Dependencies: 235
 -- Data for Name: auto_data; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3381,6 +3467,8 @@ COPY public.auto_data (auto_id, body_id, mark_id, model_id, "USD", "UAH", "EUR",
 
 
 --
+-- TOC entry 3711 (class 0 OID 16857)
+-- Dependencies: 227
 -- Data for Name: bodystyles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3496,6 +3584,8 @@ COPY public.bodystyles (id, category_id, name, added_by_sync, created_at) FROM s
 
 
 --
+-- TOC entry 3701 (class 0 OID 16807)
+-- Dependencies: 217
 -- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3514,6 +3604,8 @@ COPY public.categories (id, name, added_by_sync, created_at) FROM stdin;
 
 
 --
+-- TOC entry 3709 (class 0 OID 16843)
+-- Dependencies: 225
 -- Data for Name: cities; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3862,6 +3954,8 @@ COPY public.cities (id, name, state_id, added_by_sync, created_at) FROM stdin;
 
 
 --
+-- TOC entry 3707 (class 0 OID 16834)
+-- Dependencies: 223
 -- Data for Name: countries; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3871,6 +3965,8 @@ COPY public.countries (id, name, added_by_sync, created_at) FROM stdin;
 
 
 --
+-- TOC entry 3705 (class 0 OID 16825)
+-- Dependencies: 221
 -- Data for Name: fuel_types; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3887,6 +3983,8 @@ COPY public.fuel_types (id, name, added_by_sync, created_at) FROM stdin;
 
 
 --
+-- TOC entry 3715 (class 0 OID 16885)
+-- Dependencies: 231
 -- Data for Name: gearboxes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3973,6 +4071,8 @@ COPY public.gearboxes (id, name, category_id, added_by_sync, created_at) FROM st
 
 
 --
+-- TOC entry 3713 (class 0 OID 16871)
+-- Dependencies: 229
 -- Data for Name: marks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -4175,6 +4275,8 @@ COPY public.marks (id, category_id, name, added_by_sync, created_at) FROM stdin;
 
 
 --
+-- TOC entry 3717 (class 0 OID 16899)
+-- Dependencies: 233
 -- Data for Name: models; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -5070,6 +5172,8 @@ COPY public.models (id, name, category_id, mark_id, added_by_sync, created_at) F
 
 
 --
+-- TOC entry 3699 (class 0 OID 16800)
+-- Dependencies: 215
 -- Data for Name: scrapper_info; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -5078,6 +5182,8 @@ COPY public.scrapper_info (id, last_page, last_scrapper_date) FROM stdin;
 
 
 --
+-- TOC entry 3703 (class 0 OID 16816)
+-- Dependencies: 219
 -- Data for Name: states; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -5111,6 +5217,8 @@ COPY public.states (id, name, added_by_sync, created_at) FROM stdin;
 
 
 --
+-- TOC entry 3737 (class 0 OID 0)
+-- Dependencies: 234
 -- Name: auto_data_auto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5118,6 +5226,8 @@ SELECT pg_catalog.setval('public.auto_data_auto_id_seq', 1, false);
 
 
 --
+-- TOC entry 3738 (class 0 OID 0)
+-- Dependencies: 226
 -- Name: bodystyles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5125,6 +5235,8 @@ SELECT pg_catalog.setval('public.bodystyles_id_seq', 17, true);
 
 
 --
+-- TOC entry 3739 (class 0 OID 0)
+-- Dependencies: 216
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5132,6 +5244,8 @@ SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
 
 
 --
+-- TOC entry 3740 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: cities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5139,6 +5253,8 @@ SELECT pg_catalog.setval('public.cities_id_seq', 1, false);
 
 
 --
+-- TOC entry 3741 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: countries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5146,6 +5262,8 @@ SELECT pg_catalog.setval('public.countries_id_seq', 1, false);
 
 
 --
+-- TOC entry 3742 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: fuel_types_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5153,6 +5271,8 @@ SELECT pg_catalog.setval('public.fuel_types_id_seq', 1, false);
 
 
 --
+-- TOC entry 3743 (class 0 OID 0)
+-- Dependencies: 230
 -- Name: gearboxes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5160,6 +5280,8 @@ SELECT pg_catalog.setval('public.gearboxes_id_seq', 78, true);
 
 
 --
+-- TOC entry 3744 (class 0 OID 0)
+-- Dependencies: 228
 -- Name: marks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5167,6 +5289,8 @@ SELECT pg_catalog.setval('public.marks_id_seq', 1, false);
 
 
 --
+-- TOC entry 3745 (class 0 OID 0)
+-- Dependencies: 232
 -- Name: models_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5174,6 +5298,8 @@ SELECT pg_catalog.setval('public.models_id_seq', 1, false);
 
 
 --
+-- TOC entry 3746 (class 0 OID 0)
+-- Dependencies: 214
 -- Name: scrapper_info_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5181,6 +5307,8 @@ SELECT pg_catalog.setval('public.scrapper_info_id_seq', 1, false);
 
 
 --
+-- TOC entry 3747 (class 0 OID 0)
+-- Dependencies: 218
 -- Name: states_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -5188,6 +5316,7 @@ SELECT pg_catalog.setval('public.states_id_seq', 1, false);
 
 
 --
+-- TOC entry 3537 (class 2606 OID 16925)
 -- Name: auto_data auto_data_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5196,6 +5325,7 @@ ALTER TABLE ONLY public.auto_data
 
 
 --
+-- TOC entry 3529 (class 2606 OID 16864)
 -- Name: bodystyles bodystyles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5204,6 +5334,7 @@ ALTER TABLE ONLY public.bodystyles
 
 
 --
+-- TOC entry 3519 (class 2606 OID 16814)
 -- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5212,6 +5343,7 @@ ALTER TABLE ONLY public.categories
 
 
 --
+-- TOC entry 3527 (class 2606 OID 16850)
 -- Name: cities cities_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5220,6 +5352,7 @@ ALTER TABLE ONLY public.cities
 
 
 --
+-- TOC entry 3525 (class 2606 OID 16841)
 -- Name: countries countries_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5228,6 +5361,7 @@ ALTER TABLE ONLY public.countries
 
 
 --
+-- TOC entry 3523 (class 2606 OID 16832)
 -- Name: fuel_types fuel_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5236,6 +5370,7 @@ ALTER TABLE ONLY public.fuel_types
 
 
 --
+-- TOC entry 3533 (class 2606 OID 16892)
 -- Name: gearboxes gearboxes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5244,6 +5379,7 @@ ALTER TABLE ONLY public.gearboxes
 
 
 --
+-- TOC entry 3531 (class 2606 OID 16878)
 -- Name: marks marks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5252,6 +5388,7 @@ ALTER TABLE ONLY public.marks
 
 
 --
+-- TOC entry 3535 (class 2606 OID 16906)
 -- Name: models models_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5260,6 +5397,7 @@ ALTER TABLE ONLY public.models
 
 
 --
+-- TOC entry 3517 (class 2606 OID 16805)
 -- Name: scrapper_info scrapper_info_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5268,6 +5406,7 @@ ALTER TABLE ONLY public.scrapper_info
 
 
 --
+-- TOC entry 3521 (class 2606 OID 16823)
 -- Name: states states_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5276,6 +5415,7 @@ ALTER TABLE ONLY public.states
 
 
 --
+-- TOC entry 3694 (class 2618 OID 16970)
 -- Name: old_marks_price_year _RETURN; Type: RULE; Schema: public; Owner: postgres
 --
 
@@ -5291,6 +5431,7 @@ CREATE OR REPLACE VIEW public.old_marks_price_year AS
 
 
 --
+-- TOC entry 3697 (class 2618 OID 17036)
 -- Name: main_market_data_view _RETURN; Type: RULE; Schema: public; Owner: postgres
 --
 
@@ -5312,6 +5453,7 @@ CREATE OR REPLACE VIEW public.main_market_data_view AS
 
 
 --
+-- TOC entry 3544 (class 2606 OID 16926)
 -- Name: auto_data auto_data_body_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5320,6 +5462,7 @@ ALTER TABLE ONLY public.auto_data
 
 
 --
+-- TOC entry 3545 (class 2606 OID 16951)
 -- Name: auto_data auto_data_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5328,6 +5471,7 @@ ALTER TABLE ONLY public.auto_data
 
 
 --
+-- TOC entry 3546 (class 2606 OID 16961)
 -- Name: auto_data auto_data_city_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5336,6 +5480,7 @@ ALTER TABLE ONLY public.auto_data
 
 
 --
+-- TOC entry 3547 (class 2606 OID 16941)
 -- Name: auto_data auto_data_fuel_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5344,6 +5489,7 @@ ALTER TABLE ONLY public.auto_data
 
 
 --
+-- TOC entry 3548 (class 2606 OID 16946)
 -- Name: auto_data auto_data_gearbox_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5352,6 +5498,7 @@ ALTER TABLE ONLY public.auto_data
 
 
 --
+-- TOC entry 3549 (class 2606 OID 16931)
 -- Name: auto_data auto_data_mark_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5360,6 +5507,7 @@ ALTER TABLE ONLY public.auto_data
 
 
 --
+-- TOC entry 3550 (class 2606 OID 16936)
 -- Name: auto_data auto_data_model_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5368,6 +5516,7 @@ ALTER TABLE ONLY public.auto_data
 
 
 --
+-- TOC entry 3551 (class 2606 OID 16956)
 -- Name: auto_data auto_data_state_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5376,6 +5525,7 @@ ALTER TABLE ONLY public.auto_data
 
 
 --
+-- TOC entry 3539 (class 2606 OID 16865)
 -- Name: bodystyles bodystyles_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5384,6 +5534,7 @@ ALTER TABLE ONLY public.bodystyles
 
 
 --
+-- TOC entry 3538 (class 2606 OID 16851)
 -- Name: cities cities_state_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5392,6 +5543,7 @@ ALTER TABLE ONLY public.cities
 
 
 --
+-- TOC entry 3541 (class 2606 OID 16893)
 -- Name: gearboxes gearboxes_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5400,6 +5552,7 @@ ALTER TABLE ONLY public.gearboxes
 
 
 --
+-- TOC entry 3540 (class 2606 OID 16879)
 -- Name: marks marks_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5408,6 +5561,7 @@ ALTER TABLE ONLY public.marks
 
 
 --
+-- TOC entry 3542 (class 2606 OID 16907)
 -- Name: models models_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -5416,12 +5570,15 @@ ALTER TABLE ONLY public.models
 
 
 --
+-- TOC entry 3543 (class 2606 OID 16912)
 -- Name: models models_mark_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.models
     ADD CONSTRAINT models_mark_id_fkey FOREIGN KEY (mark_id) REFERENCES public.marks(id);
 
+
+-- Completed on 2023-06-30 13:02:18 EEST
 
 --
 -- PostgreSQL database dump complete
